@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>School Time Ki Yaadein</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  background:#000;
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+  width:100vw;height:100vh;height:100dvh;
+  position:fixed;top:0;left:0;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* Heart + Flower Rain */
+.hearts-bg{position:fixed;inset:0;pointer-events:none;z-index:1;}
+.hrt{position:absolute;animation:floatHrt 7s linear infinite;opacity:0;}
+@keyframes floatHrt{
+  0%{transform:translateY(110vh) rotate(0deg);opacity:0}
+  10%{opacity:0.9}
+  90%{opacity:0.8}
+  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+}
+
+/* Main Container */
+.container{
+  position:relative;z-index:10;
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 14px;
+  padding-top:calc(25px + env(safe-area-inset-top)); /* Top safe area */
+  padding-bottom:calc(130px + env(safe-area-inset-bottom));
+  animation:enter 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes enter{0%{opacity:0;transform:scale(0.9) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+
+/* Emotional Card */
+.emo-card{
+  background:rgba(20,5,15,0.4);
+  backdrop-filter:blur(25px);
+  border:2px solid rgba(255,111,207,0.4);
+  border-radius:30px;
+  padding:clamp(24px,6vw,30px) clamp(16px,4.5vw,22px); /* Top padding badhaya */
+  max-width:350px;width:100%;
+  text-align:center;
+  box-shadow:0 0 50px rgba(255,50,150,0.4),inset 0 1px 0 rgba(255,255,255,0.1);
+  animation:cardGlow 2.5s ease-in-out infinite alternate;
+  position:relative;
+}
+@keyframes cardGlow{
+  0%{box-shadow:0 0 35px rgba(255,50,150,0.3),inset 0 1px 0 rgba(255,255,255,0.1)}
+  100%{box-shadow:0 0 70px rgba(255,50,150,0.6),inset 0 1px 0 rgba(255,255,255,0.15)}
+}
+
+/* Neon Border Glow */
+.emo-card::before{
+  content:'';position:absolute;inset:-2px;border-radius:30px;
+  background:linear-gradient(135deg,#ff6fcf,#ff2020,#ff9de2,#ff6fcf);
+  background-size:200% 200%;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:borderFlow 4s ease infinite;
+  opacity:0.6;
+}
+@keyframes borderFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* Top Emojis - FIXED SIZE */
+.emo-top{
+  font-size:clamp(1.5rem,6vw,1.9rem);
+  margin-bottom:12px;
+  margin-top:4px; /* Thoda neeche kiya */
+  animation:emoBounce 1.8s ease-in-out infinite;
+  filter:drop-shadow(0 0 12px rgba(255,215,0,0.6));
+  line-height:1;
+}
+@keyframes emoBounce{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.1) translateY(-4px)}}
+
+/* Title - FIXED + MORE VISIBLE */
+.emo-title{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(1.2rem,5vw,1.45rem);
+  color:#ff6fcf;
+  text-shadow:0 0 25px rgba(255,111,207,1),0 0 50px rgba(255,111,207,0.7),0 2px 8px rgba(0,0,0,0.8);
+  margin-bottom:16px;
+  margin-top:4px;
+  display:inline-flex;align-items:center;gap:6px;
+  line-height:1.2;
+  padding:0 4px;
+}
+
+/* Emotional Text */
+.emo-text{
+  color:#f0d0e0;
+  font-size:clamp(0.8rem,3.4vw,0.88rem);
+  line-height:1.95;
+  font-weight:600;
+}
+.emo-text .gold{color:#FFD700;text-shadow:0 0 10px rgba(255,215,0,0.7);font-weight:700;}
+.emo-text .pink{color:#ff9de2;text-shadow:0 0 10px rgba(255,157,226,0.7);font-weight:700;}
+.emo-text .green{color:#a0ffb0;text-shadow:0 0 10px rgba(160,255,176,0.7);font-weight:700;}
+
+/* Birthday Badge */
+.bday-box{
+  display:inline-block;
+  margin-top:16px;
+  background:linear-gradient(135deg,#ff2020 0%,#ff6fcf 50%,#ff9de2 100%);
+  color:#fff;
+  font-family:'Pacifico',cursive;
+  font-size:clamp(0.9rem,3.8vw,1rem);
+  padding:11px 24px;
+  border-radius:50px;
+  box-shadow:0 0 35px rgba(255,50,100,0.8),0 4px 15px rgba(0,0,0,0.4);
+  animation:badgePop 1.8s ease-in-out infinite alternate;
+  line-height:1.5;
+}
+@keyframes badgePop{0%{transform:scale(1);box-shadow:0 0 25px rgba(255,50,100,0.6)}100%{transform:scale(1.06);box-shadow:0 0 50px rgba(255,50,100,1)}}
+.bday-box small{
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(0.68rem,2.8vw,0.75rem);
+  font-weight:700;
+  display:block;
+  margin-top:2px;
+}
+
+/* Footer Emojis */
+.emo-footer{
+  font-size:clamp(1.3rem,5.5vw,1.6rem);
+  margin-top:14px;
+  letter-spacing:clamp(2px,1.2vw,5px);
+  animation:emojiPulse 1.8s ease-in-out infinite alternate;
+  filter:drop-shadow(0 0 10px rgba(255,215,0,0.6));
+}
+@keyframes emojiPulse{0%{transform:scale(1)}100%{transform:scale(1.1)}}
+
+/* Next Button */
+.next-btn{
+  position:fixed;bottom:calc(25px + env(safe-area-inset-bottom));right:18px;
+  background:linear-gradient(135deg,#ff1e1e,#cc0000);
+  color:white;border:none;border-radius:50px;
+  padding:15px 34px;font-family:'Poppins',sans-serif;
+  font-size:1rem;font-weight:700;cursor:pointer;z-index:100;
+  box-shadow:0 0 40px rgba(255,30,30,0.9),0 6px 20px rgba(0,0,0,0.6);
+  animation:btnPulse 1.5s ease-in-out infinite alternate;
+  touch-action:manipulation;min-width:95px;
+}
+@keyframes btnPulse{0%{box-shadow:0 0 30px rgba(255,30,30,0.7)}100%{box-shadow:0 0 55px rgba(255,30,30,1)}}
+.next-btn:active{transform:scale(0.92);}
+
+/* Dots */
+.dots{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:99;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);transition:0.3s;}
+.dot.active{background:#ff1e1e;width:24px;border-radius:5px;box-shadow:0 0 12px rgba(255,30,30,1);}
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="container">
+  <div class="emo-card">
+    <div class="emo-top">🏫💛🎒</div>
+    <div class="emo-title">School Time Ki Yaadein 🥺</div>
+    
+    <div class="emo-text">
+      Yaar, hum <span class="gold">school time se saath hain</span> —<br>
+      woh dino ki <span class="pink">har yaad aaj bhi</span><br>
+      <span class="pink">dil ke kisi kone mein hai</span> 🥺<br><br>
+      
+      Zindagi ne <span class="green">raste alag kar diye</span> —<br>
+      <span class="green">door ho gaye par dil se nahi</span><br>
+      <span class="green">dosti ka rishta kabhi purana nahi hota</span> 💚<br><br>
+      
+      Meri ek hi wish hai yaar —<br>
+      <span class="gold">chahe jitni bhi dooriyaan aa jaayein</span><br>
+      <span class="gold">humara bond kabhi kamzor na pade</span> 🌙<br>
+      <span class="pink">School wali yaari sabse precious hai</span> 🤝<br>
+      <span class="green">tu meri childhood ki sabse khoobsurat yaad hai... 🥺💛</span>
+    </div>
+    
+    <div class="bday-box">
+      🎂 21st Birthday 🎂<br>
+      <small>Dher Saari Duaayein & Pyaar 💖</small>
+    </div>
+    
+    <div class="emo-footer">🎉✨🎈💫🌸💛</div>
+  </div>
+</div>
+
+<button class="next-btn" onclick="nextPage()">Next ▶</button>
+
+<div class="dots">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot active"></div>
+</div>
+
+<script>
+// Heart + Flower Rain
+const hearts=['💗','🤍','♥️','❤️','💖','💝','🌸','🌺','💕','💓'];
+const colors=['#ff1e1e','#ff6b9d','#ffc2d4','#ffffff','#ff8fab','#ffb3c6'];
+const bg=document.getElementById('heartsBg');
+let count=0;
+
+function createHeart(){
+  if(count>22) return;
+  const h=document.createElement('div');
+  h.className='hrt';
+  h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+  h.style.left=Math.random()*100+'vw';
+  h.style.animationDuration=(Math.random()*3+5)+'s';
+  h.style.fontSize=(Math.random()*1+1.1)+'rem';
+  h.style.color=colors[Math.floor(Math.random()*colors.length)];
+  h.style.zIndex='2';
+  bg.appendChild(h);
+  count++;
+  setTimeout(()=>{h.remove();count--;},8000);
+}
+setInterval(createHeart,300);
+
+// Prevent zoom
+let lastTouch=0;
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(now-lastTouch<=300){e.preventDefault();}
+  lastTouch=now;
+},false);
+
+function nextPage(){
+  if(navigator.vibrate) navigator.vibrate(50);
+  window.location.href = 'page4.html';
+}
+</script>
+</body>
+</html>

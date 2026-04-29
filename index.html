@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Happy Birthday Nandini</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  background:#000;
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+  width:100vw;height:100vh;height:100dvh; /* Mobile browser fix */
+  display:flex;align-items:center;justify-content:center;
+  position:fixed;top:0;left:0;
+}
+
+/* Heart Rain Mobile Optimized */
+.hearts-bg{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.hrt{position:absolute;animation:floatHrt 5s linear infinite;opacity:0;will-change:transform;}
+@keyframes floatHrt{
+  0%{transform:translateY(110vh) rotate(0deg);opacity:0}
+  10%{opacity:0.85}
+  90%{opacity:0.6}
+  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 2s ease-in-out infinite alternate;}
+@keyframes twinkle{0%{opacity:0.3}100%{opacity:1}}
+
+/* Main Container - Mobile Safe Area */
+.container{
+  z-index:10;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 15px;
+  padding-bottom:calc(20px + env(safe-area-inset-bottom));
+  animation:enter 0.7s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes enter{0%{opacity:0;transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
+
+/* Balloons - Mobile Size */
+.balloons-row{display:flex;gap:clamp(12px,4vw,20px);margin-bottom:clamp(15px,5vh,25px);animation:balloonFloat 2.5s ease-in-out infinite alternate;}
+@keyframes balloonFloat{0%{transform:translateY(0)}100%{transform:translateY(-12px)}}
+.balloon{font-size:clamp(2.8rem,12vw,4rem);filter:drop-shadow(0 0 12px rgba(255,30,30,0.8));}
+
+/* Text - Perfect Mobile Scaling */
+.happy{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(2.2rem,10vw,3.8rem);
+  color:#ff1e1e;
+  text-shadow:2px 2px 0 #8b0000,4px 4px 0 #5a0000,0 0 25px rgba(255,30,30,0.9);
+  line-height:1;
+  animation:textGlow 1.8s ease-in-out infinite alternate;
+}
+.birthday{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(3.2rem,15vw,5.5rem);
+  color:#fff;
+  text-shadow:3px 3px 0 #cc1111,5px 5px 0 #880000,0 0 35px rgba(255,255,255,0.6);
+  line-height:0.95;
+  margin-top:-8px;
+  animation:textGlow 1.8s ease-in-out infinite alternate;
+}
+@keyframes textGlow{0%{transform:scale(1)}100%{transform:scale(1.02)}}
+
+/* Hearts Row - Mobile */
+.hearts-row{display:flex;gap:clamp(12px,4vw,18px);margin-top:clamp(18px,6vh,28px);animation:heartBeat 1.5s ease-in-out infinite;}
+@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.heart-icon{font-size:clamp(2rem,9vw,3rem);filter:drop-shadow(0 0 10px rgba(255,50,50,0.7));}
+
+/* Next Button - Mobile Big Tap Area */
+.next-btn{
+  position:fixed;bottom:calc(75px + env(safe-area-inset-bottom));right:20px;
+  background:linear-gradient(135deg,#ff1e1e,#cc0000);
+  color:white;border:none;border-radius:50px;
+  padding:16px 36px;font-family:'Poppins',sans-serif;
+  font-size:1.05rem;font-weight:600;cursor:pointer;z-index:100;
+  box-shadow:0 0 35px rgba(255,30,30,0.8),0 6px 20px rgba(0,0,0,0.5);
+  animation:btnPulse 1.5s ease-in-out infinite alternate;
+  touch-action:manipulation;min-width:100px;
+}
+@keyframes btnPulse{0%{box-shadow:0 0 25px rgba(255,30,30,0.6)}100%{box-shadow:0 0 50px rgba(255,30,30,1)}}
+.next-btn:active{transform:scale(0.92);}
+
+/* Dots - Mobile */
+.dots{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:100;}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.3);transition:0.3s;}
+.dot.active{background:#ff1e1e;width:26px;border-radius:5px;box-shadow:0 0 12px rgba(255,30,30,0.9);}
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="container">
+  <div class="balloons-row">
+    <span class="balloon">🎈</span>
+    <span class="balloon">❤️</span>
+    <span class="balloon">🎈</span>
+    <span class="balloon">❤️</span>
+    <span class="balloon">🎈</span>
+  </div>
+  
+  <div class="happy">Happy</div>
+  <div class="birthday">Birthday!</div>
+  
+  <div class="hearts-row">
+    <span class="heart-icon">❤️</span>
+    <span class="heart-icon">🤍</span>
+    <span class="heart-icon">❤️</span>
+    <span class="heart-icon">🤍</span>
+    <span class="heart-icon">❤️</span>
+  </div>
+</div>
+
+<button class="next-btn" onclick="nextPage()">Next ▶</button>
+
+<div class="dots">
+  <div class="dot active"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+<script>
+// Mobile Optimized Heart Rain - Less CPU
+const hearts=['💗','🤍','♥️','❤️','💖'];
+const colors=['#ff1e1e','#ff6b9d','#ffffff'];
+const bg=document.getElementById('heartsBg');
+let heartCount=0;
+
+function createHeart(){
+  if(heartCount>15) return; // Mobile performance
+  const h=document.createElement('div');
+  h.className='hrt';
+  h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+  h.style.left=Math.random()*100+'vw';
+  h.style.animationDuration=(Math.random()*2+4)+'s';
+  h.style.fontSize=(Math.random()*0.8+1)+'rem';
+  h.style.color=colors[Math.floor(Math.random()*colors.length)];
+  bg.appendChild(h);
+  heartCount++;
+  setTimeout(()=>{h.remove();heartCount--;},6000);
+}
+setInterval(createHeart,400);
+
+// Stars - Less count for mobile
+for(let i=0;i<25;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  s.style.left=Math.random()*100+'vw';
+  s.style.top=Math.random()*100+'vh';
+  s.style.animationDelay=Math.random()*2+'s';
+  s.style.width=s.style.height=(Math.random()*2+1)+'px';
+  bg.appendChild(s);
+}
+
+// Prevent double-tap zoom on mobile
+let lastTouch=0;
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(now-lastTouch<=300){e.preventDefault();}
+  lastTouch=now;
+},false);
+
+function nextPage(){
+  // Vibration feedback on mobile
+  if(navigator.vibrate) navigator.vibrate(50);
+  window.location.href = 'page1.html'
+  // window.location.href = 'page2.html';
+}
+</script>
+</body>
+</html>

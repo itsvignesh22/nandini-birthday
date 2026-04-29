@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Happy Birthday Nanduu</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  background:#000;
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+  width:100vw;height:100vh;height:100dvh;
+  position:fixed;top:0;left:0;
+}
+
+/* Heart Rain Background */
+.hearts-bg{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.hrt{position:absolute;animation:floatHrt 6s linear infinite;opacity:0;}
+@keyframes floatHrt{
+  0%{transform:translateY(110vh) rotate(0deg);opacity:0}
+  10%{opacity:0.8}
+  90%{opacity:0.7}
+  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+}
+.flower{position:absolute;font-size:1.2rem;animation:floatHrt 8s linear infinite;opacity:0;}
+
+/* Main Container */
+.container{
+  position:relative;z-index:10;
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;
+  padding-bottom:calc(110px + env(safe-area-inset-bottom));
+  animation:enter 0.8s ease;
+}
+@keyframes enter{0%{opacity:0;transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
+
+/* Cute Bears Row */
+.bears-row{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:-5px;}
+.bear{animation:bob 2.2s ease-in-out infinite;}
+.bear-white{animation-delay:0s;}
+.bear-brown{animation-delay:0.3s;}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+
+/* Cake - AB NORMAL HAI, Sirf Float */
+.cake-wrap{
+  margin:15px 0;
+  animation:cakeFloat 3s ease-in-out infinite;
+}
+@keyframes cakeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+svg{display:block;}
+
+/* Flame Animation */
+.flame{animation:flicker 0.4s ease-in-out infinite alternate;transform-origin:center bottom;}
+@keyframes flicker{0%{transform:scale(1) translateY(0)}100%{transform:scale(1.15) translateY(-2px)}}
+
+/* Nanduu Name */
+.name{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(2rem,8vw,2.8rem);
+  color:#ff6fcf;
+  text-shadow:0 0 20px rgba(255,111,207,0.9),0 0 40px rgba(255,111,207,0.5);
+  margin-top:12px;
+  animation:nameGlow 1.8s ease-in-out infinite alternate;
+}
+@keyframes nameGlow{0%{text-shadow:0 0 15px rgba(255,111,207,0.6)}100%{text-shadow:0 0 35px rgba(255,111,207,1)}}
+
+/* Best Wishes */
+.wishes{
+  font-size:clamp(0.85rem,3.8vw,1rem);
+  font-weight:700;
+  color:#FFD700;
+  text-shadow:0 0 15px rgba(255,215,0,0.8);
+  margin-top:8px;
+  letter-spacing:0.5px;
+  animation:glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow{0%{text-shadow:0 0 10px rgba(255,215,0,0.6)}100%{text-shadow:0 0 25px rgba(255,215,0,1)}}
+
+/* Next Button */
+.next-btn{
+  position:fixed;bottom:calc(75px + env(safe-area-inset-bottom));right:20px;
+  background:linear-gradient(135deg,#ff1e1e,#cc0000);
+  color:white;border:none;border-radius:50px;
+  padding:16px 36px;font-family:'Poppins',sans-serif;
+  font-size:1.05rem;font-weight:700;cursor:pointer;z-index:100;
+  box-shadow:0 0 35px rgba(255,30,30,0.8),0 6px 20px rgba(0,0,0,0.5);
+  animation:btnPulse 1.5s ease-in-out infinite alternate;
+  touch-action:manipulation;min-width:100px;
+}
+@keyframes btnPulse{0%{box-shadow:0 0 25px rgba(255,30,30,0.6)}100%{box-shadow:0 0 50px rgba(255,30,30,1)}}
+.next-btn:active{transform:scale(0.92);}
+
+/* Dots */
+.dots{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:99;}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.3);transition:0.3s;}
+.dot.active{background:#ff1e1e;width:26px;border-radius:5px;box-shadow:0 0 12px rgba(255,30,30,0.9);}
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="container">
+  <!-- Cute Bears -->
+  <div class="bears-row">
+    <!-- White Bear Cuter -->
+    <div class="bear bear-white">
+      <svg viewBox="0 0 140 160" width="130" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ears -->
+        <circle cx="32" cy="35" r="22" fill="#f5f5f5"/>
+        <circle cx="108" cy="35" r="22" fill="#f5f5f5"/>
+        <circle cx="32" cy="35" r="14" fill="#ffc2d4"/>
+        <circle cx="108" cy="35" r="14" fill="#ffc2d4"/>
+        <!-- Head -->
+        <circle cx="70" cy="75" r="55" fill="#ffffff"/>
+        <!-- Bow -->
+        <ellipse cx="18" cy="20" rx="15" ry="8" fill="#ff6fcf" transform="rotate(-25 18 20)"/>
+        <ellipse cx="18" cy="20" rx="15" ry="8" fill="#ff6fcf" transform="rotate(25 18 20)"/>
+        <circle cx="18" cy="20" r="6" fill="#e040a0"/>
+        <!-- Eyes BIGGER CUTE -->
+        <circle cx="52" cy="65" r="12" fill="#1a1a1a"/>
+        <circle cx="88" cy="65" r="12" fill="#1a1a1a"/>
+        <circle cx="56" cy="59" r="5" fill="white"/>
+        <circle cx="92" cy="59" r="5" fill="white"/>
+        <circle cx="48" cy="70" r="2.5" fill="white"/>
+        <circle cx="84" cy="70" r="2.5" fill="white"/>
+        <!-- Blush -->
+        <ellipse cx="36" cy="82" rx="14" ry="10" fill="#ffb3c6" opacity="0.8"/>
+        <ellipse cx="104" cy="82" rx="14" ry="10" fill="#ffb3c6" opacity="0.8"/>
+        <!-- Muzzle -->
+        <ellipse cx="70" cy="88" rx="24" ry="18" fill="#f0f0f0"/>
+        <path d="M65 80 L70 86 L75 80" fill="#ff6fcf"/>
+        <!-- Smile -->
+        <path d="M58 92 Q70 105 82 92" stroke="#ff6fcf" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- Body -->
+        <ellipse cx="70" cy="142" rx="42" ry="32" fill="#f5f5f5"/>
+        <ellipse cx="70" cy="142" rx="25" ry="18" fill="#ffe4ec"/>
+        <!-- Arms -->
+        <ellipse cx="25" cy="132" rx="16" ry="30" fill="#ffffff" transform="rotate(-20 25 132)"/>
+        <ellipse cx="115" cy="132" rx="16" ry="30" fill="#ffffff" transform="rotate(20 115 132)"/>
+      </svg>
+    </div>
+    
+    <!-- Brown Bear Cuter -->
+    <div class="bear bear-brown">
+      <svg viewBox="0 0 140 160" width="130" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ears -->
+        <circle cx="32" cy="35" r="22" fill="#8B4513"/>
+        <circle cx="108" cy="35" r="22" fill="#8B4513"/>
+        <circle cx="32" cy="35" r="14" fill="#CD853F"/>
+        <circle cx="108" cy="35" r="14" fill="#CD853F"/>
+        <!-- Head -->
+        <circle cx="70" cy="75" r="55" fill="#A0522D"/>
+        <!-- Eyes BIGGER -->
+        <circle cx="52" cy="65" r="12" fill="#1a1a1a"/>
+        <circle cx="88" cy="65" r="12" fill="#1a1a1a"/>
+        <circle cx="56" cy="59" r="5" fill="white"/>
+        <circle cx="92" cy="59" r="5" fill="white"/>
+        <circle cx="48" cy="70" r="2.5" fill="white"/>
+        <circle cx="84" cy="70" r="2.5" fill="white"/>
+        <!-- Blush -->
+        <ellipse cx="36" cy="82" rx="14" ry="10" fill="#ff9999" opacity="0.7"/>
+        <ellipse cx="104" cy="82" rx="14" ry="10" fill="#ff9999" opacity="0.7"/>
+        <!-- Muzzle -->
+        <ellipse cx="70" cy="88" rx="24" ry="18" fill="#CD853F"/>
+        <path d="M65 80 L70 86 L75 80" fill="#1a1a1a"/>
+        <!-- Smile -->
+        <path d="M58 92 Q70 105 82 92" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- Bow tie -->
+        <polygon points="50,112 66,122 50,132" fill="#1565c0"/>
+        <polygon points="90,112 74,122 90,132" fill="#1565c0"/>
+        <circle cx="70" cy="122" r="8" fill="#1976d2"/>
+        <!-- Body -->
+        <ellipse cx="70" cy="142" rx="42" ry="32" fill="#8B4513"/>
+        <ellipse cx="70" cy="142" rx="25" ry="18" fill="#CD853F"/>
+        <!-- Arms -->
+        <ellipse cx="25" cy="132" rx="16" ry="30" fill="#A0522D" transform="rotate(-20 25 132)"/>
+        <ellipse cx="115" cy="132" rx="16" ry="30" fill="#A0522D" transform="rotate(20 115 132)"/>
+      </svg>
+    </div>
+  </div>
+  
+  <!-- Cake AB NORMAL HAI -->
+  <div class="cake-wrap">
+    <svg viewBox="0 0 220 120" width="200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Candles with Flame -->
+      <rect x="70" y="5" width="3" height="12" fill="#fff"/>
+      <rect x="107" y="5" width="3" height="12" fill="#fff"/>
+      <rect x="145" y="5" width="3" height="12" fill="#fff"/>
+      <ellipse class="flame" cx="71.5" cy="3" rx="4" ry="6" fill="url(#flameGrad)"/>
+      <ellipse class="flame" cx="108.5" cy="3" rx="4" ry="6" fill="url(#flameGrad)"/>
+      <ellipse class="flame" cx="146.5" cy="3" rx="4" ry="6" fill="url(#flameGrad)"/>
+      <defs>
+        <linearGradient id="flameGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#FF6600;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      
+      <!-- Top Layer Pink -->
+      <rect x="55" y="17" width="110" height="38" rx="10" fill="#FFB3C6"/>
+      <rect x="55" y="17" width="110" height="15" rx="10" fill="#FF8FAB"/>
+      <text x="70" y="40" font-size="18" fill="#fff">❤️</text>
+      <path d="M60 32 Q67 42 74 32 Q81 42 88 32 Q95 42 102 32 Q109 42 116 32 Q123 42 130 32 Q137 42 144 32 Q151 42 158 32" stroke="#fff" stroke-width="3" fill="none" opacity="0.7"/>
+      
+      <!-- Bottom Layer Yellow -->
+      <rect x="30" y="55" width="160" height="48" rx="12" fill="#FDE68A"/>
+      <rect x="30" y="55" width="160" height="18" rx="12" fill="#FBBF24"/>
+      <text x="110" y="85" font-family="Georgia" font-size="11" fill="#7C3AED" text-anchor="middle" font-weight="bold">Happy Birthday! 🎂</text>
+      <path d="M35 73 Q42 83 49 73 Q56 83 63 73 Q70 83 77 73 Q84 83 91 73 Q98 83 105 73 Q112 83 119 73 Q126 83 133 73 Q140 83 147 73 Q154 83 161 73 Q168 83 175 73 Q182 83 185 73" stroke="#fff" stroke-width="3" fill="none" opacity="0.6"/>
+      
+      <!-- Plate -->
+      <ellipse cx="110" cy="105" rx="95" ry="10" fill="#E5E7EB"/>
+      <ellipse cx="110" cy="105" rx="82" ry="7" fill="#F3F4F6"/>
+    </svg>
+  </div>
+  
+  <div class="name">Nanduu 🎀</div>
+  <div class="wishes">✨ Best Wishes · Pyaare Dost Ko 💗</div>
+</div>
+
+<button class="next-btn" onclick="nextPage()">Next ▶</button>
+
+<div class="dots">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot active"></div>
+  <div class="dot"></div>
+</div>
+
+<script>
+// Heart + Flower Rain
+const hearts=['💗','🤍','♥️','❤️','💖','💝','🌸','🌺'];
+const bg=document.getElementById('heartsBg');
+let count=0;
+
+function createHeart(){
+  if(count>20) return;
+  const h=document.createElement('div');
+  const isFlower=Math.random()>0.7;
+  h.className=isFlower?'flower':'hrt';
+  h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+  h.style.left=Math.random()*100+'vw';
+  h.style.animationDuration=(Math.random()*3+4)+'s';
+  h.style.fontSize=(Math.random()*0.8+1)+'rem';
+  h.style.color=['#ff1e1e','#ff6b9d','#ffc2d4','#ffffff','#ff8fab'][Math.floor(Math.random()*5)];
+  bg.appendChild(h);
+  count++;
+  setTimeout(()=>{h.remove();count--;},8000);
+}
+setInterval(createHeart,350);
+
+// Prevent zoom
+let lastTouch=0;
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(now-lastTouch<=300){e.preventDefault();}
+  lastTouch=now;
+},false);
+
+function nextPage(){
+  if(navigator.vibrate) navigator.vibrate(50);
+  window.location.href = 'page3.html';
+}
+</script>
+</body>
+</html>

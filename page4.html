@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Party Pending Hai!</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  background:#000;
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+  width:100vw;height:100vh;height:100dvh;
+  position:fixed;top:0;left:0;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* Heart Rain */
+.hearts-bg{position:fixed;inset:0;pointer-events:none;z-index:1;}
+.hrt{position:absolute;animation:floatHrt 7s linear infinite;opacity:0;}
+@keyframes floatHrt{
+  0%{transform:translateY(110vh) rotate(0deg);opacity:0}
+  10%{opacity:0.8}
+  90%{opacity:0.7}
+  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+}
+
+/* Main Container */
+.container{
+  position:relative;z-index:10;
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 14px;
+  padding-bottom:calc(120px + env(safe-area-inset-bottom));
+  animation:enter 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes enter{0%{opacity:0;transform:scale(0.8) translateY(30px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+
+/* Party Card */
+.party-card{
+  background:rgba(20,5,15,0.5);
+  backdrop-filter:blur(25px);
+  border:2px solid rgba(255,215,0,0.4);
+  border-radius:30px;
+  padding:clamp(26px,6vw,32px) clamp(20px,5vw,26px);
+  max-width:340px;width:100%;
+  text-align:center;
+  box-shadow:0 0 60px rgba(255,215,0,0.4),inset 0 1px 0 rgba(255,255,255,0.1);
+  animation:cardGlow 2s ease-in-out infinite alternate;
+  position:relative;
+}
+@keyframes cardGlow{
+  0%{box-shadow:0 0 40px rgba(255,215,0,0.3),inset 0 1px 0 rgba(255,255,255,0.1)}
+  100%{box-shadow:0 0 80px rgba(255,215,0,0.6),inset 0 1px 0 rgba(255,255,255,0.15)}
+}
+
+/* Golden Border */
+.party-card::before{
+  content:'';position:absolute;inset:-2px;border-radius:30px;
+  background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700,#FF6347);
+  background-size:200% 200%;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:borderFlow 3s ease infinite;
+  opacity:0.7;
+}
+@keyframes borderFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* Top Icons */
+.top-icons{
+  font-size:clamp(2.2rem,9vw,2.8rem);
+  margin-bottom:14px;
+  animation:iconBounce 1.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 15px rgba(255,215,0,0.8));
+  line-height:1;
+}
+@keyframes iconBounce{0%,100%{transform:scale(1) rotate(-5deg)}50%{transform:scale(1.15) rotate(5deg)}}
+
+/* Title */
+.party-title{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(1.4rem,5.8vw,1.7rem);
+  color:#FFD700;
+  text-shadow:0 0 25px rgba(255,215,0,1),0 0 50px rgba(255,215,0,0.6);
+  margin-bottom:18px;
+  display:inline-flex;align-items:center;gap:8px;
+  line-height:1.2;
+}
+
+/* Party Text */
+.party-text{
+  color:#f0f0f0;
+  font-size:clamp(0.9rem,3.8vw,1rem);
+  line-height:2;
+  font-weight:700;
+}
+.party-text .yellow{color:#FFD700;text-shadow:0 0 12px rgba(255,215,0,0.8);font-weight:800;}
+
+/* Buttons Container */
+.btn-row{
+  display:flex;gap:12px;justify-content:center;
+  margin-top:22px;
+  position:relative;
+  min-height:55px;
+}
+
+/* Haan Button */
+.btn-haan{
+  background:linear-gradient(135deg,#00E676,#00C853);
+  color:white;border:none;border-radius:50px;
+  padding:14px 28px;font-family:'Poppins',sans-serif;
+  font-size:clamp(0.9rem,3.8vw,1rem);font-weight:800;
+  cursor:pointer;z-index:100;
+  box-shadow:0 0 35px rgba(0,230,118,0.8),0 4px 15px rgba(0,0,0,0.4);
+  animation:btnGreen 1.5s ease-in-out infinite alternate;
+  touch-action:manipulation;
+  display:inline-flex;align-items:center;gap:6px;
+}
+@keyframes btnGreen{0%{box-shadow:0 0 25px rgba(0,230,118,0.6)}100%{box-shadow:0 0 50px rgba(0,230,118,1)}}
+.btn-haan:active{transform:scale(0.92);}
+
+/* Nahi Button - RUNAWAY */
+.btn-nahi{
+  background:linear-gradient(135deg,#FF1744,#D50000);
+  color:white;border:none;border-radius:50px;
+  padding:14px 28px;font-family:'Poppins',sans-serif;
+  font-size:clamp(0.9rem,3.8vw,1rem);font-weight:800;
+  cursor:pointer;z-index:100;
+  box-shadow:0 0 35px rgba(255,23,68,0.8),0 4px 15px rgba(0,0,0,0.4);
+  animation:btnRed 1.5s ease-in-out infinite alternate;
+  touch-action:manipulation;
+  position:relative;
+  transition:all 0.3s ease;
+}
+@keyframes btnRed{0%{box-shadow:0 0 25px rgba(255,23,68,0.6)}100%{box-shadow:0 0 50px rgba(255,23,68,1)}}
+.btn-nahi.run{
+  position:fixed !important;
+  animation:none;
+}
+
+/* Dots */
+.dots{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:99;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);transition:0.3s;}
+.dot.active{background:#ff1e1e;width:24px;border-radius:5px;box-shadow:0 0 12px rgba(255,30,30,1);}
+
+/* Success Message */
+.success-msg{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+  background:linear-gradient(135deg,#00E676,#00C853);
+  color:white;padding:30px 40px;border-radius:25px;
+  font-family:'Poppins',sans-serif;font-weight:800;font-size:1.3rem;
+  box-shadow:0 0 60px rgba(0,230,118,1);
+  z-index:200;opacity:0;pointer-events:none;
+  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  text-align:center;
+}
+.success-msg.show{transform:translate(-50%,-50%) scale(1);opacity:1;}
+
+/* Next Button - HIDDEN BY DEFAULT */
+.next-btn{
+  position:fixed;bottom:calc(75px + env(safe-area-inset-bottom));right:18px;
+  background:linear-gradient(135deg,#ff1e1e,#cc0000);
+  color:white;border:none;border-radius:50px;
+  padding:15px 34px;font-family:'Poppins',sans-serif;
+  font-size:1rem;font-weight:700;cursor:pointer;z-index:100;
+  box-shadow:0 0 40px rgba(255,30,30,0.9),0 6px 20px rgba(0,0,0,0.6);
+  animation:btnPulse 1.5s ease-in-out infinite alternate,slideIn 0.5s ease;
+  touch-action:manipulation;min-width:95px;
+  opacity:0;pointer-events:none;transform:translateY(20px);
+  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes btnPulse{0%{box-shadow:0 0 30px rgba(255,30,30,0.7)}100%{box-shadow:0 0 55px rgba(255,30,30,1)}}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.next-btn.show{
+  opacity:1;pointer-events:auto;transform:translateY(0);
+}
+.next-btn:active{transform:scale(0.92);}
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="container">
+  <div class="party-card">
+    <div class="top-icons">🐻🎉</div>
+    <div class="party-title">Party Pending Hai! 🍰</div>
+    
+    <div class="party-text">
+      Yaar sun,<br>
+      <span class="yellow">Party baki hai abhi! 🥂</span><br>
+      De dogi na mujhe party?<br>
+      Sach bata! 👇
+    </div>
+    
+    <div class="btn-row">
+      <button class="btn-haan" onclick="haanClick()">✅ Haan De Dungi!</button>
+      <button class="btn-nahi" id="nahiBtn" onclick="nahiClick()">Nahi Dungi</button>
+    </div>
+  </div>
+</div>
+
+<div class="dots">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot active"></div>
+</div>
+
+<div class="success-msg" id="successMsg">🎉 Yesss! Party Pakki! 🥳💛</div>
+
+<button class="next-btn" id="nextBtn" onclick="nextPage()">Next ▶</button>
+
+<script>
+// Heart Rain
+const hearts=['💗','🤍','♥️','❤️','💖','💝','🌸','🌺','💕','💓'];
+const colors=['#ff1e1e','#ff6b9d','#ffc2d4','#ffffff','#ff8fab','#ffb3c6'];
+const bg=document.getElementById('heartsBg');
+let count=0;
+
+function createHeart(){
+  if(count>25) return;
+  const h=document.createElement('div');
+  h.className='hrt';
+  h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+  h.style.left=Math.random()*100+'vw';
+  h.style.animationDuration=(Math.random()*3+5)+'s';
+  h.style.fontSize=(Math.random()*1.2+1.1)+'rem';
+  h.style.color=colors[Math.floor(Math.random()*colors.length)];
+  h.style.zIndex='2';
+  bg.appendChild(h);
+  count++;
+  setTimeout(()=>{h.remove();count--;},8000);
+}
+setInterval(createHeart,280);
+
+// Nahi Button Runaway Logic
+let nahiClickCount = 0;
+const nahiBtn = document.getElementById('nahiBtn');
+
+function nahiClick(){
+  nahiClickCount++;
+  if(navigator.vibrate) navigator.vibrate(30);
+  
+  const maxX = window.innerWidth - 120;
+  const maxY = window.innerHeight - 200;
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+  
+  nahiBtn.classList.add('run');
+  nahiBtn.style.left = randomX + 'px';
+  nahiBtn.style.top = randomY + 'px';
+  nahiBtn.style.right = 'auto';
+  nahiBtn.style.bottom = 'auto';
+  
+  if(nahiClickCount >= 5){
+    nahiBtn.textContent = 'Pakad ke dikha! 😂';
+    nahiBtn.style.fontSize = '0.8rem';
+  }
+}
+
+// Haan Button Success + Show Next
+function haanClick(){
+  if(navigator.vibrate) navigator.vibrate([50,50,50]);
+  const msg = document.getElementById('successMsg');
+  const nextBtn = document.getElementById('nextBtn');
+  
+  msg.classList.add('show');
+  confetti();
+  
+  // 1 second baad Next button dikhao
+  setTimeout(()=>{
+    nextBtn.classList.add('show');
+  },1000);
+  
+  setTimeout(()=>{
+    msg.classList.remove('show');
+  },3000);
+}
+
+// Confetti Effect
+function confetti(){
+  for(let i=0;i<50;i++){
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.style.position='fixed';
+      c.style.left=Math.random()*100+'vw';
+      c.style.top='-10px';
+      c.style.fontSize=(Math.random()*1.5+1)+'rem';
+      c.style.zIndex='150';
+      c.textContent=['🎉','✨','🎊','💛','🌸','💖'][Math.floor(Math.random()*6)];
+      c.style.animation=`confettiFall ${Math.random()*2+2}s linear forwards`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),3000);
+    },i*30);
+  }
+}
+
+const style = document.createElement('style');
+style.textContent = `@keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0;}}`;
+document.head.appendChild(style);
+
+// Prevent zoom
+let lastTouch=0;
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(now-lastTouch<=300){e.preventDefault();}
+  lastTouch=now;
+},false);
+
+function nextPage(){
+  if(navigator.vibrate) navigator.vibrate(50);
+  // Yaha apna next page ka link daal de
+  window.location.href = 'page5.html';
+}
+</script>
+</body>
+</html>

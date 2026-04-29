@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Krishna Blessings</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  background:#000;
+  font-family:'Poppins',sans-serif;
+  overflow:hidden;
+  width:100vw;height:100vh;height:100dvh;
+  position:fixed;top:0;left:0;
+}
+
+/* Krishna Image Background */
+.krishna-bg{
+  position:fixed;inset:0;
+  background:url('krishna.jpg.jpeg') center/cover no-repeat;
+  z-index:0;
+}
+.krishna-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.2) 40%,rgba(0,0,0,0.7) 100%);
+}
+
+/* Golden Particles */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:1;}
+.particle{position:absolute;width:3px;height:3px;background:#FFD700;border-radius:50%;
+  box-shadow:0 0 10px #FFD700,0 0 20px rgba(255,215,0,0.5);
+  animation:float 8s linear infinite;opacity:0;}
+@keyframes float{
+  0%{transform:translateY(110vh) translateX(0);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-10vh) translateX(20px);opacity:0}
+}
+
+/* Content Container */
+.container{
+  position:relative;z-index:10;
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 18px;
+  padding-bottom:calc(120px + env(safe-area-inset-bottom)); /* Button ke liye space */
+  animation:enter 1s ease;
+}
+@keyframes enter{0%{opacity:0;transform:scale(0.95)}100%{opacity:1;transform:scale(1)}}
+
+/* Blessing Text */
+.blessing-text{
+  font-size:clamp(0.9rem,4vw,1.1rem);
+  font-weight:700;line-height:1.85;
+  color:#fff;text-align:center;
+  text-shadow:0 2px 12px rgba(0,0,0,0.9),0 0 25px rgba(255,215,0,0.4);
+  max-width:480px;
+  animation:textGlow 3s ease-in-out infinite alternate;
+}
+@keyframes textGlow{
+  0%{text-shadow:0 2px 12px rgba(0,0,0,0.9),0 0 25px rgba(255,215,0,0.3)}
+  100%{text-shadow:0 2px 12px rgba(0,0,0,0.9),0 0 40px rgba(255,215,0,0.7)}
+}
+
+.hindi{font-size:clamp(1rem,4.3vw,1.2rem);color:#FFD700;}
+.hbd{font-size:clamp(1.25rem,5.2vw,1.5rem);color:#FFD700;margin-top:10px;
+  text-shadow:0 0 25px rgba(255,215,0,0.9);font-weight:800;}
+
+/* Divine Light Effect */
+.divine-light{
+  position:fixed;top:8%;left:50%;transform:translateX(-50%);
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(255,215,0,0.35) 0%,transparent 70%);
+  border-radius:50%;filter:blur(40px);
+  animation:pulse 4s ease-in-out infinite;z-index:2;
+}
+@keyframes pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:0.5}50%{transform:translateX(-50%) scale(1.3);opacity:0.8}}
+
+/* Next Button - Ab aur neeche */
+.next-btn{
+  position:fixed;bottom:calc(25px + env(safe-area-inset-bottom));right:20px;
+  background:linear-gradient(135deg,#FFD700,#FFA500);
+  color:#1a0a00;border:none;border-radius:50px;
+  padding:16px 36px;font-family:'Poppins',sans-serif;
+  font-size:1.05rem;font-weight:700;cursor:pointer;z-index:100;
+  box-shadow:0 0 35px rgba(255,215,0,0.8),0 6px 20px rgba(0,0,0,0.5);
+  animation:btnPulse 1.5s ease-in-out infinite alternate;
+  touch-action:manipulation;min-width:100px;
+}
+@keyframes btnPulse{0%{box-shadow:0 0 25px rgba(255,215,0,0.6)}100%{box-shadow:0 0 50px rgba(255,215,0,1)}}
+.next-btn:active{transform:scale(0.92);}
+
+/* Dots */
+.dots{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:99;}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.3);transition:0.3s;}
+.dot.active{background:#FFD700;width:26px;border-radius:5px;box-shadow:0 0 12px rgba(255,215,0,0.9);}
+</style>
+</head>
+<body>
+
+<div class="krishna-bg"></div>
+<div class="divine-light"></div>
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <div class="blessing-text">
+    May Lord Krishna<br>
+    always bless you<br>
+    with happiness,<br>
+    peace, and<br>
+    strength. May all<br>
+    your dreams come<br>
+    true and your life<br>
+    be filled with love,<br>
+    success, and<br>
+    beautiful<br>
+    moments. <span class="hindi">Stay<br>
+    खुश</span>, keep smiling,<br>
+    and keep shining.<br>
+    <div class="hbd">Happy Birthday Nandini 🎂✨</div>
+  </div>
+</div>
+
+<button class="next-btn" onclick="nextPage()">Next ▶</button>
+
+<div class="dots">
+  <div class="dot"></div>
+  <div class="dot active"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+<script>
+// Golden Divine Particles
+const particles=document.getElementById('particles');
+function createParticle(){
+  const p=document.createElement('div');
+  p.className='particle';
+  p.style.left=Math.random()*100+'vw';
+  p.style.animationDuration=(Math.random()*3+5)+'s';
+  p.style.animationDelay=Math.random()*2+'s';
+  particles.appendChild(p);
+  setTimeout(()=>p.remove(),8000);
+}
+setInterval(createParticle,300);
+
+// Prevent zoom
+let lastTouch=0;
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(now-lastTouch<=300){e.preventDefault();}
+  lastTouch=now;
+},false);
+
+function nextPage(){
+  if(navigator.vibrate) navigator.vibrate(50);
+  window.location.href = 'page2.html';
+}
+</script>
+</body>
+</html>
