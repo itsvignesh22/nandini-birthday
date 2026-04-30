@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Personal Doctor 💛</title>
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #000;
             font-family: 'Segoe UI', Arial, sans-serif;
-            overflow-x: hidden;
-            overflow-y: auto;
+            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
         }
+        
         .rain {
             position: fixed;
             top: 0;
@@ -26,121 +31,135 @@
             pointer-events: none;
             z-index: 1;
         }
-        .heart {
+        .heart-bg {
             position: absolute;
-            top: -50px;
-            width: 20px;
-            height: 20px;
-            background: #fff;
-            transform: rotate(45deg);
+            font-size: 22px;
+            opacity: 0.45;
+            font-weight: 900;
             animation: fall linear infinite;
-            box-shadow: 0 0 20px rgba(255,255,255,0.9);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
         }
-        .heart:before,
-        .heart:after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #fff;
-            border-radius: 50%;
-        }
-        .heart:before { top: -10px; left: 0; }
-        .heart:after { top: 0; left: -10px; }
         @keyframes fall {
             0% { top: -50px; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
+            10% { opacity: 0.45; }
+            90% { opacity: 0.45; }
             100% { top: 110vh; opacity: 0; }
         }
-        .heart:nth-child(1) { left: 10%; animation-duration: 10s; animation-delay: 0s; }
-        .heart:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 1s; }
-        .heart:nth-child(3) { left: 30%; animation-duration: 9s; animation-delay: 2s; }
-        .heart:nth-child(4) { left: 40%; animation-duration: 11s; animation-delay: 0.5s; }
-        .heart:nth-child(5) { left: 50%; animation-duration: 10s; animation-delay: 1.5s; }
-        .heart:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: 2.5s; }
-        .heart:nth-child(7) { left: 70%; animation-duration: 9.5s; animation-delay: 1s; }
-        .heart:nth-child(8) { left: 80%; animation-duration: 11.5s; animation-delay: 2s; }
-        .heart:nth-child(9) { left: 90%; animation-duration: 10.5s; animation-delay: 0s; }
-        .heart:nth-child(10) { left: 15%; animation-duration: 12.5s; animation-delay: 3s; }
+        .heart-bg:nth-child(1) { left: 10%; animation-duration: 10s; animation-delay: 0s; }
+        .heart-bg:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 1s; }
+        .heart-bg:nth-child(3) { left: 30%; animation-duration: 9s; animation-delay: 2s; }
+        .heart-bg:nth-child(4) { left: 40%; animation-duration: 11s; animation-delay: 0.5s; }
+        .heart-bg:nth-child(5) { left: 50%; animation-duration: 10s; animation-delay: 1.5s; }
+        .heart-bg:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: 2.5s; }
+        .heart-bg:nth-child(7) { left: 70%; animation-duration: 9.5s; animation-delay: 1s; }
+        .heart-bg:nth-child(8) { left: 80%; animation-duration: 11.5s; animation-delay: 2s; }
+        .heart-bg:nth-child(9) { left: 90%; animation-duration: 10.5s; animation-delay: 0s; }
+        .heart-bg:nth-child(10) { left: 15%; animation-duration: 12.5s; animation-delay: 3s; }
 
+        /* Main Card - Strong Glow Border */
         .card {
-            background: #111;
-            padding: 40px 30px;
-            border-radius: 20px;
+            background: #0a0a0a;
+            padding: 24px 14px;
+            border-radius: 24px;
             text-align: center;
-            max-width: 500px;
-            margin: 20px;
+            width: 82%;
+            max-width: 320px;
+            max-height: 88vh;
             position: relative;
             z-index: 2;
-            border: 2px solid transparent;
-            background: linear-gradient(#111, #111) padding-box,
-                        linear-gradient(90deg, #333, #fff, #333) border-box;
-            background-size: 200% 100%;
-            animation: borderMove 3s linear infinite;
+            border: 2px solid #ff4d94;
+            box-shadow: 
+                0 0 15px rgba(255, 77, 148, 0.8),
+                0 0 30px rgba(79, 195, 247, 0.6),
+                0 0 45px rgba(255, 77, 148, 0.4),
+                inset 0 0 15px rgba(255, 77, 148, 0.1);
+            animation: cardGlow 2s ease-in-out infinite alternate;
         }
-        @keyframes borderMove {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 200% 0%; }
+        @keyframes cardGlow {
+            0% { 
+                border-color: #ff4d94;
+                box-shadow: 
+                    0 0 15px rgba(255, 77, 148, 0.8),
+                    0 0 30px rgba(79, 195, 247, 0.6),
+                    0 0 45px rgba(255, 77, 148, 0.4),
+                    inset 0 0 15px rgba(255, 77, 148, 0.1);
+            }
+            100% { 
+                border-color: #4fc3f7;
+                box-shadow: 
+                    0 0 20px rgba(79, 195, 247, 0.9),
+                    0 0 40px rgba(255, 77, 148, 0.7),
+                    0 0 60px rgba(79, 195, 247, 0.5),
+                    inset 0 0 20px rgba(79, 195, 247, 0.15);
+            }
         }
 
         .doctor-img {
-            font-size: 90px;
-            margin-bottom: 10px;
-            filter: grayscale(0.3) brightness(1.5);
+            font-size: 48px;
+            margin-bottom: 8px;
             animation: pulse 2s ease-in-out infinite;
         }
         @keyframes pulse {
-            0%, 100% { transform: scale(1); filter: grayscale(0.3) brightness(1.5); }
-            50% { transform: scale(1.1); filter: grayscale(0.3) brightness(2); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
         }
 
         h1 {
             color: #fff;
-            font-size: 28px;
-            margin: 15px 0;
-            font-weight: 300;
-            letter-spacing: 1px;
+            font-size: 19px;
+            margin: 6px 0 10px 0;
+            font-weight: 400;
+            letter-spacing: 0.3px;
         }
-        .quote {
+        
+        .emoji-row {
             font-size: 17px;
+            margin: 8px 0;
+            letter-spacing: 5px;
+        }
+
+        .quote {
+            font-size: 12.8px;
             color: #e0e0e0;
-            line-height: 1.9;
-            margin: 20px 0;
+            line-height: 1.55;
+            margin: 10px 0;
             font-weight: 300;
+            padding: 0 5px;
         }
         .highlight {
             color: #4fc3f7;
             font-weight: 500;
         }
-        .emoji-row {
-            font-size: 30px;
-            margin: 20px 0;
-            letter-spacing: 10px;
-            opacity: 0.9;
+        .highlight-pink {
+            color: #ff8a9f;
+            font-weight: 500;
         }
+
         .btn {
             display: inline-block;
-            margin-top: 25px;
-            padding: 14px 35px;
-            background: #fff;
-            color: #000;
+            margin-top: 12px;
+            padding: 10px 26px;
+            background: linear-gradient(135deg, #ff4d94, #ff6b9f);
+            color: #fff;
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 13px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 77, 148, 0.4);
         }
         .btn:hover {
-            background: #e0e0e0;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(255, 77, 148, 0.6);
         }
     </style>
 </head>
 <body>
     <div class="rain">
-        <div class="heart"></div><div class="heart"></div><div class="heart"></div><div class="heart"></div><div class="heart"></div>
-        <div class="heart"></div><div class="heart"></div><div class="heart"></div><div class="heart"></div><div class="heart"></div>
+        <div class="heart-bg">🤍</div><div class="heart-bg">❤️</div><div class="heart-bg">💜</div>
+        <div class="heart-bg">🤍</div><div class="heart-bg">❤️</div><div class="heart-bg">💙</div>
+        <div class="heart-bg">🤍</div><div class="heart-bg">❤️</div><div class="heart-bg">💛</div>
+        <div class="heart-bg">🤍</div>
     </div>
 
     <div class="card">
@@ -153,22 +172,17 @@
             White coat me <span class="highlight">aap bohot responsible</span> lagti hain 🥼✨<br><br>
             
             Duniya ke liye <span class="highlight">aap Pharmacist</span> hain 💊<br>
-            Par mere liye <span class="highlight">aap Meri Personal Doctor</span> hain 🩺💛<br><br>
+            Par mere liye <span class="highlight-pink">aap Meri Personal Doctor</span> hain 🩺💛<br><br>
             
             Mujhe kuch bhi ho jaye...<br>
             Bukhar ho, sardi ho, ya <span class="highlight">koi tension</span> ho 🤒<br>
-            Main sabse pehle <span class="highlight">aapko hi call karunga</span> 📞😊<br><br>
+            Main sabse pehle <span class="highlight-pink">aapko hi call karunga</span> 📞😊<br><br>
             
-            Kyunki <span class="highlight">aap care karti hain</span> sabki 💙<br>
-            <span class="highlight">Aapki mehnat aur dedication</span> se 🙏<br>
-            Logon ki <span class="highlight">zindagi better</span> hoti hai 🏥✨<br><br>
+            <span class="highlight">Aapki mehnat rang layegi</span> 💪 Apne career me<br>
+            <span class="highlight-pink">aap bohot aage jaogi, mujhe pura yakeen hai</span> 🚀✨<br><br>
             
-            <span class="highlight">Aap apne dreams complete karein</span> 🎯<br>
-            Ek <span class="highlight">successful Pharmacist</span> banein 🌟<br>
-            Mujhe <span class="highlight">bharosa hai aap par</span> 💪<br><br>
-            
-            <span class="highlight">Aapki dawai se logon ki zindagi banti hai</span> 💊✨<br>
-            <span class="highlight">Aur haan... sahi dawai dena sabko, logon ki life ka sawaal hai 😂💛</span>
+            <span class="highlight">Aapki dawai se logon ki zindagi banti hai</span> 💊<br>
+            <span class="highlight-pink">Sahi dawai dena sabko, logon ki life ka sawaal hai 😂💛</span>
         </p>
         
         <div class="emoji-row">🥼💙🏥💪</div>
