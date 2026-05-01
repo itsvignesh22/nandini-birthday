@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Surprise 💛</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #000000;
+            position: relative;
+        }
+
+        /* Floating Hearts Background */
+        .float-item {
+            position: absolute;
+            font-size: 18px;
+            animation: floatUp linear infinite;
+            opacity: 0.7;
+            z-index: 0;
+            filter: drop-shadow(0 0 6px currentColor);
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 15px 70px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .gifts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        /* Insta Style Pink Gift Box */
+        .gift-box {
+            background: #ff1a8c;
+            height: 38px;
+            border-radius: 19px;
+            position: relative;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s ease;
+            box-shadow: 0 0 12px rgba(255, 26, 140, 0.5);
+        }
+
+        /* White horizontal ribbon */
+        .gift-box::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: white;
+            transform: translateY(-50%);
+        }
+
+        /* White vertical ribbon */
+        .gift-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: white;
+            transform: translateX(-50%);
+        }
+
+        /* Bow emoji */
+        .bow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            z-index: 2;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+        }
+
+        .gift-box:active { transform: scale(0.97); }
+
+        .gift-box.opened {
+            background: #ff1a8c;
+            padding: 10px 20px;
+            height: auto;
+            min-height: 38px;
+            box-shadow: 0 0 18px rgba(255, 26, 140, 0.7);
+        }
+
+        .gift-box.opened::before, 
+        .gift-box.opened::after,
+        .gift-box.opened .bow { display: none; }
+
+        .gift-message {
+            display: none;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+
+        .gift-box.opened .gift-message { 
+            display: block; 
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Next Button */
+        .next-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff1744;
+            color: white;
+            padding: 12px 32px;
+            border-radius: 25px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(255, 23, 68, 0.7);
+            display: none;
+            z-index: 100;
+        }
+
+        .next-btn.show { 
+            display: block; 
+            animation: bounceIn 0.4s;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .progress {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Hearts Container -->
+    <div id="floatContainer"></div>
+
+    <div class="progress" id="progress">0/11 Opened</div>
+
+    <div class="container">
+        <div class="gifts-list">
+            <div class="gift-box" style="width: 140px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">12:00 am</div>
+            </div>
+            <div class="gift-box" style="width: 200px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">Sal bhar mein 😌💗</div>
+            </div>
+            <div class="gift-box" style="width: 190px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">Sabse payara 🥰🌸</div>
+            </div>
+            <div class="gift-box" style="width: 160px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">Hota hai 😊💫</div>
+            </div>
+            <div class="gift-box" style="width: 130px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">Ek din 💗</div>
+            </div>
+            <div class="gift-box" style="width: 150px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">100 duaye 🙌</div>
+            </div>
+            <div class="gift-box" style="width: 180px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">Da raha hai dil 😌❤️</div>
+            </div>
+            <div class="gift-box" style="width: 195px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">Tumko Aaj ke din 🥰👀</div>
+            </div>
+            <div class="gift-box" style="width: 165px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">I wish you 🥰🤎</div>
+            </div>
+            <div class="gift-box" style="width: 210px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">Happy happy birthday 🎂</div>
+            </div>
+            <div class="gift-box" style="width: 230px;" onclick="openGift(this)">
+                <div class="bow">🎀</div>
+                <div class="gift-message">Happy Happy birthday 2 you 🎉</div>
+            </div>
+        </div>
+
+        <button class="next-btn" id="nextBtn" onclick="goNext()">Next ▶</button>
+    </div>
+
+    <script>
+        // Floating hearts with glow
+        const hearts = ['❤️', '💗', '💖', '💕', '💜', '🤍'];
+        const colors = ['#ff1744', '#ff1a8c', '#e91e63', '#ff4081'];
+        const container = document.getElementById('floatContainer');
+        
+        function createFloat() {
+            const el = document.createElement('div');
+            el.className = 'float-item';
+            el.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.animationDuration = (Math.random() * 4 + 5) + 's';
+            el.style.fontSize = (Math.random() * 12 + 14) + 'px';
+            el.style.color = colors[Math.floor(Math.random() * colors.length)];
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 9000);
+        }
+
+        setInterval(createFloat, 400);
+
+        // Gift logic
+        let openedCount = 0;
+        const totalGifts = 11;
+
+        function openGift(el) {
+            if (!el.classList.contains('opened')) {
+                el.classList.add('opened');
+                openedCount++;
+                document.getElementById('progress').innerText = `${openedCount}/${totalGifts} Opened`;
+                
+                if (openedCount === totalGifts) {
+                    setTimeout(() => {
+                        document.getElementById('nextBtn').classList.add('show');
+                    }, 400);
+                }
+            }
+        }
+
+        function goNext() {
+            alert('Sab gifts khul gaye! 💛\n\nYahan apna next page link daal de');
+            // window.location.href = 'next-page.html';
+        }
+    </script>
+</body>
+</html>
