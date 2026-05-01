@@ -6,7 +6,7 @@
     <title>Surprise 💛</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         html, body {
             height: 100vh;
             width: 100vw;
@@ -19,127 +19,67 @@
             position: relative;
         }
 
-        /* Floating Hearts Background */
-        .float-item {
+       .float-heart {
             position: absolute;
-            font-size: 18px;
+            font-size: 20px;
             animation: floatUp linear infinite;
-            opacity: 0.7;
+            opacity: 0.6;
             z-index: 0;
-            filter: drop-shadow(0 0 6px currentColor);
+            filter: drop-shadow(0 0 8px currentColor);
+            pointer-events: none;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
-        .container {
+       .container {
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             padding: 20px 15px 70px;
             position: relative;
             z-index: 1;
         }
 
-        .gifts-list {
+       .messages-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            align-items: flex-start;
             width: 100%;
-            max-width: 380px;
+            max-width: 400px;
         }
 
-        /* Insta Style Pink Gift Box */
-        .gift-box {
-            background: #ff1a8c;
-            height: 38px;
-            border-radius: 19px;
-            position: relative;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.15s ease;
-            box-shadow: 0 0 12px rgba(255, 26, 140, 0.5);
-        }
-
-        /* White horizontal ribbon */
-        .gift-box::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 12px;
-            right: 12px;
-            height: 2px;
-            background: white;
-            transform: translateY(-50%);
-        }
-
-        /* White vertical ribbon */
-        .gift-box::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 2px;
-            height: 100%;
-            background: white;
-            transform: translateX(-50%);
-        }
-
-        /* Bow emoji */
-        .bow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18px;
-            z-index: 2;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
-        }
-
-        .gift-box:active { transform: scale(0.97); }
-
-        .gift-box.opened {
-            background: #ff1a8c;
-            padding: 10px 20px;
-            height: auto;
-            min-height: 38px;
-            box-shadow: 0 0 18px rgba(255, 26, 140, 0.7);
-        }
-
-        .gift-box.opened::before, 
-        .gift-box.opened::after,
-        .gift-box.opened .bow { display: none; }
-
-        .gift-message {
-            display: none;
+       .msg-bubble {
+            background: linear-gradient(135deg, #ff1a8c 0%, #e6167a 100%);
             color: white;
-            font-size: 14px;
+            padding: 11px 20px;
+            border-radius: 22px;
+            font-size: 15px;
             font-weight: 600;
-            text-align: center;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            box-shadow: 0 0 15px rgba(255, 26, 140, 0.5);
+            width: fit-content;
+            max-width: 85%;
+            opacity: 0;
+            transform: scale(0.8) translateX(-20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
         }
 
-        .gift-box.opened .gift-message { 
-            display: block; 
-            animation: fadeIn 0.3s ease;
+       .msg-bubble.show {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            pointer-events: all;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
+       .msg-bubble:active { transform: scale(0.96); }
 
-        /* Next Button */
-        .next-btn {
+       .next-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -156,8 +96,8 @@
             z-index: 100;
         }
 
-        .next-btn.show { 
-            display: block; 
+       .next-btn.show {
+            display: block;
             animation: bounceIn 0.4s;
         }
 
@@ -167,83 +107,78 @@
             100% { transform: scale(1); }
         }
 
-        .progress {
+       .tap-hint {
             position: fixed;
-            top: 15px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255,255,255,0.4);
+            font-size: 16px;
+            text-align: center;
+            z-index: 5;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+       .tap-hint.hide { opacity: 0; }
+
+       .progress {
+            position: fixed;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
             color: rgba(255,255,255,0.5);
-            font-size: 12px;
+            font-size: 13px;
             z-index: 10;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Hearts Container -->
     <div id="floatContainer"></div>
-
-    <div class="progress" id="progress">0/11 Opened</div>
+    <div class="progress" id="progress">Tap anywhere 0/11</div>
+    <div class="tap-hint" id="tapHint">👆 Tap to reveal messages</div>
 
     <div class="container">
-        <div class="gifts-list">
-            <div class="gift-box" style="width: 140px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">12:00 am</div>
-            </div>
-            <div class="gift-box" style="width: 200px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">Sal bhar mein 😌💗</div>
-            </div>
-            <div class="gift-box" style="width: 190px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">Sabse payara 🥰🌸</div>
-            </div>
-            <div class="gift-box" style="width: 160px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">Hota hai 😊💫</div>
-            </div>
-            <div class="gift-box" style="width: 130px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">Ek din 💗</div>
-            </div>
-            <div class="gift-box" style="width: 150px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">100 duaye 🙌</div>
-            </div>
-            <div class="gift-box" style="width: 180px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">Da raha hai dil 😌❤️</div>
-            </div>
-            <div class="gift-box" style="width: 195px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">Tumko Aaj ke din 🥰👀</div>
-            </div>
-            <div class="gift-box" style="width: 165px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">I wish you 🥰🤎</div>
-            </div>
-            <div class="gift-box" style="width: 210px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">Happy happy birthday 🎂</div>
-            </div>
-            <div class="gift-box" style="width: 230px;" onclick="openGift(this)">
-                <div class="bow">🎀</div>
-                <div class="gift-message">Happy Happy birthday 2 you 🎉</div>
-            </div>
+        <div class="messages-list">
+            <div class="msg-bubble" id="timeMessage"></div>
+            <div class="msg-bubble">Sal bhar mein 😌💗</div>
+            <div class="msg-bubble">Sabse payara 🥰🌸</div>
+            <div class="msg-bubble">Hota hai 😊💫</div>
+            <div class="msg-bubble">Ek din 💗</div>
+            <div class="msg-bubble">100 duaye 🙌</div>
+            <div class="msg-bubble">Da raha hai dil 😌❤️</div>
+            <div class="msg-bubble">Tumko Aaj ke din 🥰👀</div>
+            <div class="msg-bubble">I wish you 🥰🤎</div>
+            <div class="msg-bubble">Happy happy birthday 🎂</div>
+            <div class="msg-bubble">Happy Happy birthday 2 you Nandini 🎉</div>
         </div>
 
         <button class="next-btn" id="nextBtn" onclick="goNext()">Next ▶</button>
     </div>
 
     <script>
-        // Floating hearts with glow
+        // Set current time in first message
+        function setCurrentTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0 ko 12 banao
+            const mins = minutes < 10 ? '0' + minutes : minutes;
+            const timeString = `${hours}:${mins} ${ampm}`;
+            document.getElementById('timeMessage').innerText = timeString;
+        }
+        setCurrentTime();
+
+        // Floating hearts
         const hearts = ['❤️', '💗', '💖', '💕', '💜', '🤍'];
         const colors = ['#ff1744', '#ff1a8c', '#e91e63', '#ff4081'];
         const container = document.getElementById('floatContainer');
-        
+
         function createFloat() {
             const el = document.createElement('div');
-            el.className = 'float-item';
+            el.className = 'float-heart';
             el.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
             el.style.left = Math.random() * 100 + 'vw';
             el.style.animationDuration = (Math.random() * 4 + 5) + 's';
@@ -252,29 +187,41 @@
             container.appendChild(el);
             setTimeout(() => el.remove(), 9000);
         }
-
         setInterval(createFloat, 400);
 
-        // Gift logic
-        let openedCount = 0;
-        const totalGifts = 11;
+        // Message reveal logic
+        let currentIndex = 0;
+        const bubbles = document.querySelectorAll('.msg-bubble');
+        const totalMessages = bubbles.length;
+        let started = false;
 
-        function openGift(el) {
-            if (!el.classList.contains('opened')) {
-                el.classList.add('opened');
-                openedCount++;
-                document.getElementById('progress').innerText = `${openedCount}/${totalGifts} Opened`;
-                
-                if (openedCount === totalGifts) {
+        document.body.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') return;
+
+            if (!started) {
+                started = true;
+                document.getElementById('tapHint').classList.add('hide');
+            }
+            revealNext();
+        });
+
+        function revealNext() {
+            if (currentIndex < totalMessages) {
+                bubbles[currentIndex].classList.add('show');
+                currentIndex++;
+                document.getElementById('progress').innerText = `${currentIndex}/${totalMessages} revealed`;
+
+                if (currentIndex === totalMessages) {
                     setTimeout(() => {
                         document.getElementById('nextBtn').classList.add('show');
+                        document.getElementById('progress').innerText = 'All revealed! 💛';
                     }, 400);
                 }
             }
         }
 
         function goNext() {
-            //alert('Sab gifts khul gaye! 💛\n\nYahan apna next page link daal de');
+            //alert('Sab messages dekh liye! 💛\n\nYahan apna next page link daal de');
             window.location.href = 'page3.html';
         }
     </script>
