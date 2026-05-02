@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Best Memories 💛</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100vh; width: 100vw; overflow: hidden; }
+        body {
+            background: #2a0e1a;
+            background-image: radial-gradient(circle at 20% 50%, rgba(139, 69, 89, 0.3) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, rgba(88, 28, 52, 0.4) 0%, transparent 50%);
+            font-family: 'Poppins', sans-serif;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 2.5vh 20px; color: #fff;
+        }
+.heart-rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+.heart { position: absolute; font-size: 2.2vh; animation: fall linear infinite; opacity: 0.7; will-change: transform; }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; } 90% { opacity: 0.7; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+.header { text-align: center; z-index: 2; margin-bottom: 2vh; }
+.header h1 { font-family: 'Dancing Script', cursive; font-size: 6.5vh; font-weight: 700; line-height: 1; text-shadow: 0 0 20px rgba(255,192,203,0.6), 0 2px 10px rgba(0,0,0,0.3); }
+.header h2 { font-family: 'Dancing Script', cursive; font-size: 6vh; margin-top: -1vh; font-weight: 700; }
+.subtitle { font-size: 1.7vh; font-weight: 300; font-style: italic; opacity: 0.85; max-width: 75vw; text-align: center; line-height: 1.5; margin: 1.2vh 0 0; z-index: 2; }
+.polaroid-wrapper { position: relative; z-index: 2; perspective: 1000px; margin: 2vh 0; }
+.polaroid { background: #f8f8f8; padding: 1.3vh 1.3vh 5.5vh 1.3vh; box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3); border-radius: 2px; transform: rotate(-3deg); transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); width: 68vw; max-width: 270px; }
+.polaroid.active { animation: cardEntry 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes cardEntry {
+            0% { transform: rotate(-3deg) scale(0.5) translateY(50px); opacity: 0; }
+            100% { transform: rotate(-3deg) scale(1) translateY(0); opacity: 1; }
+        }
+.polaroid img { width: 100%; height: 40vh; object-fit: cover; display: block; border-radius: 1px; background: #ddd; }
+.polaroid-caption { color: #5a5a5a; text-align: center; font-family: 'Dancing Script', cursive; font-size: 2.1vh; margin-top: 1.3vh; font-weight: 400; }
+.btn-group { display: flex; flex-direction: column; gap: 1.3vh; width: 68vw; max-width: 270px; z-index: 2; }
+.btn { padding: 1.7vh 20px; border-radius: 30px; border: 1.5px solid rgba(255,192,203,0.4); background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); color: #fff; font-size: 1.8vh; font-weight: 500; cursor: pointer; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; letter-spacing: 0.3px; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: linear-gradient(135deg, #a8335c 0%, #6b2137 100%); border: 1.5px solid rgba(255,192,203,0.6); box-shadow: 0 0 30px rgba(168, 51, 92, 0.4), inset 0 1px 0 rgba(255,255,255,0.2); }
+.btn-next-page { background: linear-gradient(135deg, #c44569 0%, #8e2a4f 100%); border: 1.5px solid rgba(255,192,203,0.8); box-shadow: 0 0 25px rgba(196,69,105,0.6); display: none; animation: fadeInUp 0.5s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.memory-counter { font-size: 1.4vh; opacity: 0.5; font-weight: 300; z-index: 2; margin-top: 0.5vh; text-align: center; }
+.glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120%; height: 120%; background: radial-gradient(circle, rgba(255,192,203,0.15) 0%, transparent 70%); filter: blur(40px); z-index: 1; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <div class="heart-rain" id="heartRain"></div>
+    <div class="glow"></div>
+
+    <div class="header">
+        <h1>Our Best</h1>
+        <h2>Memories</h2>
+        <p class="subtitle">Bhai, tere saath wali har yaad meri life ki sabse solid, pagalpanti wali, yaadgar film hai.</p>
+    </div>
+
+    <div class="polaroid-wrapper">
+        <div class="polaroid active" id="polaroid">
+            <img id="memoryImg" src="" alt="Memory">
+            <p class="polaroid-caption" id="memoryCaption">Loading...</p>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextMemory()">
+            Next Memory ✨ (<span id="currentNum">1</span>/6)
+        </button>
+        <button class="btn btn-next-page" id="nextPageBtn" onclick="goToNextPage()">
+            Next Page 🎉
+        </button>
+        <p class="memory-counter" id="counter">1 / 6 Memories Unlocked</p>
+    </div>
+
+    <script>
+        // ==================== LOCAL IMAGES -./ LAGANA ZARURI HAI ====================
+        const memories = [
+            { img: "./anime_image/goingtoganesh.jpeg", caption: "Sab plan tha… par jo achanak hua, wahi sabse khoobsurat tha. Yaad hai?💫" },
+            { img: "./anime_image/ganeshparnam.jpeg", caption: "Bachpan se yahin aata hun… us din tumhe yahan lana, alag hi feel tha.🙏✨" },
+            { img: "./anime_image/goingtovishnu.jpeg", caption: "😊✨✨🫠" },
+            { img: "./anime_image/pranamvishnu.jpeg", caption: "Saath darshan karke, bahut achha laga💫" },
+            { img: "./anime_image/parsad.jpeg", caption: "😋😌😌" },
+            { img: "./anime_image/schoolimage.jpeg", caption: "Hum dono late ho jaate the… baatein karte karte class pahunchte the, yaad hai?😊✨" }
+        ];
+
+        const NEXT_PAGE_URL = "final-page.html";
+        // ==================== BAS ITNA HI ====================
+
+        let currentIndex = 0;
+
+        window.onload = function() {
+            document.getElementById('memoryImg').src = memories[0].img;
+            document.getElementById('memoryCaption').innerText = memories[0].caption;
+            console.log('Loading image:', memories[0].img); // Debug ke liye
+        };
+
+        function nextMemory() {
+            const polaroid = document.getElementById('polaroid');
+            polaroid.style.transform = 'rotate(-3deg) scale(0.9)';
+            polaroid.style.opacity = '0';
+            setTimeout(() => {
+                currentIndex++;
+                if (currentIndex >= memories.length) { currentIndex = memories.length - 1; return; }
+                document.getElementById('memoryImg').src = memories[currentIndex].img;
+                document.getElementById('memoryCaption').innerText = memories[currentIndex].caption;
+                document.getElementById('currentNum').innerText = currentIndex + 1;
+                document.getElementById('counter').innerText = `${currentIndex + 1} / ${memories.length} Memories Unlocked`;
+                console.log('Loading image:', memories[currentIndex].img); // Debug ke liye
+                if (currentIndex === memories.length - 1) {
+                    document.getElementById('nextBtn').style.display = 'none';
+                    document.getElementById('nextPageBtn').style.display = 'block';
+                }
+                polaroid.classList.remove('active');
+                void polaroid.offsetWidth;
+                polaroid.classList.add('active');
+                polaroid.style.transform = 'rotate(-3deg) scale(1)';
+                polaroid.style.opacity = '1';
+            }, 300);
+        }
+
+        function goToNextPage() { window.location.href = page5.html; }
+
+        // Heart Rain
+        const heartRain = document.getElementById('heartRain');
+        const hearts = ['💛', '💖', '💕', '💗', '🤍'];
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heartRain.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+        setInterval(createHeart, 500);
+        for(let i = 0; i < 5; i++) setTimeout(createHeart, i * 200);
+    </script>
+</body>
+</html>
