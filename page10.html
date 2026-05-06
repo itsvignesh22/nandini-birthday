@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Happy Birthday Nandini 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+/* ══════════════════════════════
+   PAGE 1 — LIGHTS INTRO - SMOOTH
+══════════════════════════════ */
+#page1 {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 60px 0;
+  z-index: 100;
+  will-change: opacity;
+  transition: opacity 0.8s ease;
+}
+#page1.fade-out { opacity: 0; pointer-events: none; }
+
+.lights-area {
+  width: 100%;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  will-change: opacity, transform;
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.lights-area.hide {
+  opacity: 0;
+  transform: translateY(-50px);
+  pointer-events: none;
+}
+
+.light-string {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  position: relative;
+  height: 70px;
+}
+
+.light-string::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #2a2a2a;
+  z-index: 0;
+  will-change: background;
+  transition: background 0.5s ease;
+}
+body.lights-on .light-string::before {
+  background: #555;
+}
+
+.bulb-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.bulb-wire {
+  width: 2px;
+  height: 16px;
+  background: #2a2a2a;
+  will-change: background;
+  transition: background 0.5s ease;
+}
+body.lights-on .bulb-wire {
+  background: #555;
+}
+
+.bulb {
+  width: 22px;
+  height: 28px;
+  border-radius: 50% 50% 45%;
+  background: #0a0a0a;
+  position: relative;
+  will-change: transform, filter, background;
+  transition: all 0.8s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.bulb::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 6px;
+  background: #1a1a1a;
+  border-radius: 0 0 4px 4px;
+}
+
+body.lights-on .bulb {
+  animation: bulbGlow 2s ease-in-out infinite;
+  will-change: transform, filter;
+}
+
+body.lights-on .bulb.red {
+  background: #ff2d2d;
+  box-shadow: 0 0 15px 8px rgba(255,45,45,1), 
+              0 0 40px 15px rgba(255,45,45,0.5),
+              inset 0 -2px 8px rgba(255,255,255,0.3);
+}
+body.lights-on .bulb.green {
+  background: #2dff5a;
+  box-shadow: 0 0 15px 8px rgba(45,255,90,1), 
+              0 0 40px 15px rgba(45,255,90,0.5),
+              inset 0 -2px 8px rgba(255,255,255,0.3);
+}
+body.lights-on .bulb.blue {
+  background: #2da8ff;
+  box-shadow: 0 0 15px 8px rgba(45,168,255,1), 
+              0 0 40px 15px rgba(45,168,255,0.5),
+              inset 0 -2px 8px rgba(255,255,255,0.3);
+}
+body.lights-on .bulb.yellow {
+  background: #ffe22d;
+  box-shadow: 0 0 15px 8px rgba(255,226,45,1), 
+              0 0 40px 15px rgba(255,226,45,0.5),
+              inset 0 -2px 8px rgba(255,255,255,0.3);
+}
+body.lights-on .bulb.purple {
+  background: #c92dff;
+  box-shadow: 0 0 15px 8px rgba(201,45,255,1), 
+              0 0 40px 15px rgba(201,45,255,0.5),
+              inset 0 -2px 8px rgba(255,255,255,0.3);
+}
+body.lights-on .bulb.orange {
+  background: #ff7a2d;
+  box-shadow: 0 0 15px 8px rgba(255,122,45,1), 
+              0 0 40px 15px rgba(255,122,45,0.5),
+              inset 0 -2px 8px rgba(255,255,255,0.3);
+}
+body.lights-on .bulb.pink {
+  background: #ff2da8;
+  box-shadow: 0 0 15px 8px rgba(255,45,168,1), 
+              0 0 40px 15px rgba(255,45,168,0.5),
+              inset 0 -2px 8px rgba(255,255,255,0.3);
+}
+body.lights-on .bulb.white {
+  background: #fff5a0;
+  box-shadow: 0 0 15px 8px rgba(255,245,160,1), 
+              0 0 40px 15px rgba(255,245,160,0.6),
+              inset 0 -2px 8px rgba(255,255,255,0.4);
+}
+
+@keyframes bulbGlow {
+  0%, 100% { 
+    transform: scale(1); 
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.15); 
+    filter: brightness(1.4);
+  }
+}
+
+.hb-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2.8rem, 9vw, 3.8rem);
+  font-weight: 700;
+  color: #FFD700;
+  text-shadow: none;
+  text-align: center;
+  opacity: 0;
+  z-index: 110;
+  pointer-events: none;
+  letter-spacing: 3px;
+  line-height: 1.2;
+  will-change: opacity, transform;
+  transition: opacity 2s ease-out, transform 2s cubic-bezier(0.19,1,0.22,1);
+}
+.hb-text.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.timer-display {
+  position: fixed;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFD700;
+  opacity: 0;
+  z-index: 115;
+  will-change: opacity;
+  transition: opacity 0.5s ease;
+}
+.timer-display.show {
+  opacity: 1;
+}
+
+.btn-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 120;
+}
+.dark-hint {
+  color: #444;
+  font-size: 0.75rem;
+  font-family: 'Nunito', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+#onBtn {
+  background: linear-gradient(135deg, #ff6eb4, #ff3c8e);
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 50px;
+  padding: 16px 44px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255,60,142,0.5), 0 4px 20px rgba(0,0,0,0.4);
+  will-change: transform;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#onBtn:active { transform: scale(0.96); }
+
+.star {
+  position: fixed;
+  background: #fff;
+  border-radius: 50%;
+  animation: starTwinkle 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+  will-change: opacity, transform;
+}
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.1; transform: scale(0.5); }
+  50% { opacity: 0.6; transform: scale(1); }
+}
+
+/* ══════════════════════════════
+   PAGE 2 — BIRTHDAY CARD - COMPACT
+══════════════════════════════ */
+#page2 {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffe0f0 0%, #fff0f5 40%, #ffd6ec 70%, #ffe8d6 100%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+  will-change: opacity;
+  transition: opacity 0.8s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#page2.show { opacity: 1; pointer-events: all; }
+
+.hearts-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.heart-float {
+  position: absolute;
+  opacity: 0;
+  animation: floatUp 6s ease-in infinite;
+  will-change: transform, opacity;
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-10vh) scale(1.2) rotate(20deg); opacity: 0; }
+}
+
+.p2-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 440px;
+  width: 100%;
+  padding: 10px 12px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title-section {
+  text-align: center;
+  margin-bottom: 8px;
+  animation: fadeDown 1s ease-out both;
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.title-section h1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.1rem;
+  color: #d63384;
+  text-shadow: 2px 8px rgba(214,51,132,0.3);
+}
+.emojis-bounce {
+  font-size: 1.4rem;
+  display: block;
+  animation: bounce 1.5s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.card-layout {
+  display: flex;
+  width: 100%;
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 6px 25px rgba(214,51,132,0.15), 0 2px 8px rgba(0,0,0,0.05);
+  border: 2px solid rgba(255,182,212,0.6);
+  overflow: hidden;
+  animation: fadeInCard 1.2s ease-out 0.3s both;
+  will-change: opacity, transform;
+}
+@keyframes fadeInCard {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* LEFT SIDE - PHOTO + NEXT BUTTON */
+.photo-side {
+  width: 110px;
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10x 6px 10px;
+  background: linear-gradient(180deg, rgba(255,220,240,0.7) 0%, rgba(255,245,250,0.5) 100%);
+  border-right: 1.5px solid rgba(255,182,212,0.4);
+  gap: 12px;
+}
+
+.photo-frame {
+  width: 92px;
+  height: 105px;
+  border-radius: 12px;
+  border: 3px solid #ff85b3;
+  background: linear-gradient(135deg,#fff0f5,#ffe0f0);
+  box-shadow: 0 4px 12px rgba(214,51,132,0.2), inset 0 0 0 2px rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  animation: pulseFrame 2.5s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes pulseFrame {
+  0%,100% { box-shadow: 0 4px 12px rgba(214,51,132,0.2), 0 0 0 0 rgba(214,51,132,0.2); }
+  50% { box-shadow: 0 4px 12px rgba(214,51,132,0.2), 0 0 0 5px rgba(214,51,132,0.06); }
+}
+.photo-frame img { 
+    width:100%; height:100%; object-fit:cover;
+    object-position: center 20%;
+     border-radius:10px; }
+
+.next-btn-left {
+  width: 92px;
+  background: linear-gradient(135deg, #ff6eb4, #ff3c8e);
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 20px;
+  padding: 9px 0;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(255,60,142,0.4);
+  will-change: transform;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.next-btn-left:active { transform: scale(0.96); }
+
+.message-side {
+  flex: 1;
+  padding: 12px 10px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  max-height: calc(100vh - 180px);
+}
+.nandini-label {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.2rem;
+  color: #d63384;
+  font-weight: 700;
+}
+.message-text {
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: #5a2d4a;
+  font-weight: 600;
+}
+.message-text .hl { color: #d63384; font-weight: 800; }
+.wish-box {
+  background: linear-gradient(135deg, rgba(255,182,212,0.3), rgba(255,220,240,0.2));
+  border-radius: 10px;
+  padding: 7px 9px;
+  border-left: 3px solid #ff85b3;
+  font-size: 0.68rem;
+  line-height: 1.55;
+  color: #5a2d4a;
+  font-weight: 600;
+}
+
+.bottom-ribbon {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  animation: fadeInCard 1.5s ease-out 1s both;
+}
+.ribbon-text {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff85b3, #d63384, #ff85b3);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.1rem;
+  font-weight: 700;
+  animation: shimmer 3s linear infinite;
+  will-change: background-position;
+}
+@keyframes shimmer { 0%{background-position:0%}100%{background-position:200%} }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ PAGE 1 ═══════════ -->
+<div id="page1">
+
+  <div id="starsContainer"></div>
+
+  <div class="hb-text" id="hbText">🎂 Happy Birthday Nandini! 🎉</div>
+  
+  <div class="timer-display" id="timerDisplay">Going to next page in 3...</div>
+
+  <div class="lights-area" id="lightsArea"></div>
+
+  <div class="btn-area">
+    <span class="dark-hint">✦ it's dark here ✦</span>
+    <div style="position:relative; display:flex; align-items:center; justify-content:center;">
+      <button id="onBtn" onclick="turnOnLights()">💡 ON THE LIGHT</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 2 ═══════════ -->
+<div id="page2">
+  <div class="hearts-bg" id="heartsContainer"></div>
+
+  <div class="p2-inner">
+    <div class="title-section">
+      <span class="emojis-bounce">🎂 🎉 🎊</span>
+      <h1>Happy Birthday!</h1>
+    </div>
+
+    <div class="card-layout">
+      <div class="photo-side">
+        <!-- PHOTO FRAME - TU YAHAN PATH DAAL DE -->
+        <div class="photo-frame">
+          <img src="./anime_image/nandu.jpeg" alt="Nandini" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+        </div>
+        
+        <!-- NEXT BUTTON - FRAME KE JUST NEECHE -->
+        <button class="next-btn-left" onclick="alert('Next page coming soon! 🎉')">NEXT →</button>
+      </div>
+
+      <div class="message-side">
+        <div class="nandini-label">Dear Nandini 🌸</div>
+
+        <div class="message-text">
+          Aaj tumhara birthday hai aur main bahut khush hoon ki tum meri
+          <span class="hl">sabse pyaari dost</span> ho! Tumhari friendship ne
+          meri zindagi ko itna khaas bana diya hai. 🌼
+        </div>
+
+        <div class="message-text">
+          Tumhari hasi aur tumhari baatein dil ko kitna sukoon deti hain,
+          ye main bayan nahi kar sakta. Tum sach mein ek
+          <span class="hl">bahut achhi insaan</span> ho. 💕
+        </div>
+
+        <div class="wish-box">
+          Is khaas din par main chahta hoon ki tumhare saare sapne poore hon 🌟,
+          tumhari life mein hamesha <span class="hl">khushiyan</span> aati rahen,
+          aur tumhara har din pehle se aur bhi sundar ho.
+          Tumhare saath dosti karna meri life ki
+          <span class="hl">sabse badi khushi</span> hai. 🎂✨
+        </div>
+
+        <div class="message-text" style="font-size:0.68rem;">
+          Bas yahi dua hai ki tum hamesha
+          <span class="hl">muskurate raho</span>, healthy raho,
+          aur duniya ki saari khushiyan tumhare paas aayein.
+          Tum deserve karti ho sabse best! 🌺🎀
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-ribbon">
+      <span class="ribbon-text">🌸 Nandini ko bahut saari duaayein! 🌸</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Stars
+const starsC = document.getElementById('starsContainer');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 1;
+  s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*4}s;animation-duration:${2+Math.random()*3}s;`;
+  starsC.appendChild(s);
+}
+
+// Build bulbs
+const colors = ['red','green','blue','yellow','purple','orange','pink','white'];
+const lightsArea = document.getElementById('lightsArea');
+
+for (let row = 0; row < 3; row++) {
+  const string = document.createElement('div');
+  string.className = 'light-string';
+  
+  const bulbCount = 12;
+  for (let i = 0; i < bulbCount; i++) {
+    const container = document.createElement('div');
+    container.className = 'bulb-container';
+    
+    const wire = document.createElement('div');
+    wire.className = 'bulb-wire';
+    
+    const bulb = document.createElement('div');
+    bulb.className = `bulb ${colors[i % colors.length]}`;
+    
+    container.appendChild(wire);
+    container.appendChild(bulb);
+    string.appendChild(container);
+  }
+  
+  lightsArea.appendChild(string);
+}
+
+// Turn On Lights - SMOOTH
+let turned = false;
+function turnOnLights() {
+  if (turned) return;
+  turned = true;
+
+  const btn = document.getElementById('onBtn');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+
+  document.body.classList.add('lights-on');
+
+  // Show text slowly + HIDE LIGHTS + START TIMER
+  setTimeout(() => {
+    document.getElementById('hbText').classList.add('show');
+    document.getElementById('lightsArea').classList.add('hide');
+    
+    // 3 Second Timer
+    let count = 3;
+    const timerEl = document.getElementById('timerDisplay');
+    timerEl.classList.add('show');
+    timerEl.textContent = `Going to next page in ${count}...`;
+    
+    const countdown = setInterval(() => {
+      count--;
+      if (count > 0) {
+        timerEl.textContent = `Going to next page in ${count}...`;
+      } else {
+        clearInterval(countdown);
+        timerEl.textContent = `Let's go! 🎉`;
+        // Go to page 2
+        setTimeout(() => {
+          document.getElementById('page1').classList.add('fade-out');
+          setTimeout(() => {
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').classList.add('show');
+            buildHearts();
+          }, 800);
+        }, 500);
+      }
+    }, 1000);
+  }, 1000);
+}
+
+// Hearts
+function buildHearts() {
+  const hc = document.getElementById('heartsContainer');
+  const items = ['💕','💗','💖','🩷','❤️','💝','🌸','✿','⭐','🌼'];
+  for (let i = 0; i < 28; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-float';
+    h.textContent = items[Math.floor(Math.random() * items.length)];
+    h.style.cssText = `left:${Math.random()*100}%;font-size:${0.8+Math.random()*1}rem;animation-delay:${Math.random()*8}s;animation-duration:${5+Math.random()*5}s;`;
+    hc.appendChild(h);
+  }
+}
+
+// Prevent zoom
+let lastTouch = 0;
+document.addEventListener('touchend', e => {
+  const now = Date.now();
+  if (now - lastTouch <= 300) e.preventDefault();
+  lastTouch = now;
+}, {passive: false});
+</script>
+</body>
+</html>
