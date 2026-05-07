@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Memory</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #1a0a08;
+    font-family: 'Lato', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-x: hidden;
+    padding: 0 0 60px;
+  }
+  .petal {
+    position: fixed; font-size: 18px; opacity: 0;
+    animation: floatPetal linear infinite;
+    pointer-events: none; z-index: 0;
+  }
+  @keyframes floatPetal {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.5; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  }
+  .wrapper {
+    position: relative;
+    width: 100%; max-width: 420px;
+    padding: 0 20px;
+    z-index: 1;
+    animation: fadeUp 0.9s ease forwards;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(30px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .top-text { text-align: center; padding: 44px 0 28px; }
+  .top-text .small-label {
+    font-size: 11px; letter-spacing: 4px;
+    color: #c8913a; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .top-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px; font-weight: 900;
+    color: #f5e6d3; line-height: 1.2; margin-bottom: 10px;
+  }
+  .top-text .sub { font-size: 13px; color: #9a7060; line-height: 1.6; }
+
+  .photo-wrap {
+    position: relative; border-radius: 28px; padding: 5px;
+    background: linear-gradient(135deg, rgba(200,145,58,0.33), rgba(232,176,96,0.2), rgba(200,145,58,0.33));
+    box-shadow: 0 0 0 1px rgba(200,145,58,0.4), 0 0 40px rgba(200,145,58,0.15), 0 24px 60px rgba(0,0,0,0.65);
+    max-width: 340px; margin: 0 auto;
+  }
+  .photo-wrap img { width: 100%; display: block; border-radius: 24px; }
+  .photo-wrap::after {
+    content: ''; position: absolute; inset: 5px; border-radius: 24px;
+    background: linear-gradient(to bottom, rgba(200,145,58,0.04) 0%, transparent 30%, transparent 70%, rgba(26,10,8,0.18) 100%);
+    pointer-events: none;
+  }
+  .bottom-section { text-align: center; margin-top: 28px; padding: 0 10px; }
+  .bottom-section .quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; color: #f5e6d3; line-height: 1.7; opacity: 0.9;
+  }
+  .bottom-section .tagline { font-size: 13px; color: #9a7060; margin-top: 10px; line-height: 1.6; }
+  .sparkles { font-size: 24px; margin-top: 16px; letter-spacing: 8px; text-align: center; }
+
+  .next-btn {
+    display: block; margin: 32px auto 0; padding: 15px 44px;
+    background: linear-gradient(135deg, #c8913a, #e8b060);
+    border: none; border-radius: 50px; color: #1a0a08;
+    font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700;
+    cursor: pointer; text-decoration: none; width: fit-content;
+    animation: pulseBtn 2s ease-in-out infinite; transition: transform 0.2s;
+  }
+  .next-btn:hover { transform: scale(1.05); }
+  @keyframes pulseBtn {
+    0%,100% { box-shadow: 0 4px 24px rgba(200,145,58,0.5); }
+    50%      { box-shadow: 0 8px 36px rgba(200,145,58,0.85); }
+  }
+  .confetti-piece {
+    position: fixed; font-size: 22px;
+    animation: confettiFall 2.2s ease forwards; pointer-events: none; z-index: 100;
+  }
+  @keyframes confettiFall {
+    0%   { opacity:1; transform: translateY(0) rotate(0deg); }
+    100% { opacity:0; transform: translateY(320px) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="petal" style="left:5%;  animation-duration:9s;  animation-delay:0s;">&#x1F338;</div>
+<div class="petal" style="left:15%; animation-duration:12s; animation-delay:2s;">&#x1F33A;</div>
+<div class="petal" style="left:25%; animation-duration:8s;  animation-delay:5s;">&#x1F33C;</div>
+<div class="petal" style="left:70%; animation-duration:11s; animation-delay:1s;">&#x1F338;</div>
+<div class="petal" style="left:82%; animation-duration:10s; animation-delay:3s;">&#x1F339;</div>
+<div class="petal" style="left:92%; animation-duration:13s; animation-delay:7s;">&#x2728;</div>
+<div class="petal" style="left:45%; animation-duration:9s;  animation-delay:4s;">&#x1F33C;</div>
+<div class="petal" style="left:58%; animation-duration:14s; animation-delay:6s;">&#x1F338;</div>
+
+<div class="wrapper">
+  <div class="top-text">
+    <div class="small-label">&#x1F33F;27 MAY 2026</div>
+    <h1>MY BIRTHDAY GIRL &#x1F338;</h1>
+    <div class="sub">Aj mere litti chokha ka birthday haii,<br>😋😋😋</div>
+  </div>
+
+  <div class="photo-wrap">
+  <img src="./anime_image/nandu1.jpeg" alt="">
+</div>
+
+  <div class="bottom-section">
+    <div class="quote">
+      God Bless you &mdash;<br>
+      and humesha khush rahena &#x1F49B;
+    </div>
+    <div class="tagline">ek bt humesha yd rkhna rasta chahe kitna bhi mushkil ho manjil bhale h dur ho tum dosa and pani puri khate rehna boht majedar hota h. &#x1F338;</div>
+  </div>
+
+  <div class="sparkles">&#x1F338; &#x2728; &#x1F338;</div>
+
+  <!-- Tum apna path yahan dena -->
+  <a class="next-btn" href="YOUR_NEXT_PAGE_PATH_HERE">Next &#x279C;</a>
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    var e = ['&#x1F338;','&#x1F33A;','&#x1F33C;','&#x2728;','&#x1F49B;','&#x1F337;','&#x1F490;','&#x2B50;'];
+    for (var i = 0; i < 25; i++) {
+      (function(i) {
+        setTimeout(function() {
+          var c = document.createElement('div');
+          c.className = 'confetti-piece';
+          c.innerHTML = e[Math.floor(Math.random()*e.length)];
+          c.style.left = (Math.random()*100) + 'vw';
+          c.style.top  = (Math.random()*20) + 'vh';
+          c.style.animationDuration = (1.5 + Math.random()) + 's';
+          document.body.appendChild(c);
+          setTimeout(function(){ c.remove(); }, 2500);
+        }, i * 100);
+      })(i);
+    }
+  });
+</script>
+</body>
+</html>
