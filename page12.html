@@ -92,9 +92,36 @@
     0%   { opacity:1; transform: translateY(0) rotate(0deg); }
     100% { opacity:0; transform: translateY(320px) rotate(360deg); }
   }
+
+  /* Music Button */
+  .music-btn {
+    position: fixed; bottom: 20px; right: 20px;
+    background: linear-gradient(135deg, #c8913a, #e8b060);
+    border: none; border-radius: 50%; width: 48px; height: 48px;
+    font-size: 20px; cursor: pointer; z-index: 999;
+    box-shadow: 0 4px 20px rgba(200,145,58,0.5);
+    display: flex; align-items: center; justify-content: center;
+    animation: pulseMusicBtn 2s ease-in-out infinite;
+    transition: transform 0.2s;
+  }
+  .music-btn:hover { transform: scale(1.1); }
+  @keyframes pulseMusicBtn {
+    0%,100% { box-shadow: 0 4px 20px rgba(200,145,58,0.5); }
+    50%      { box-shadow: 0 4px 32px rgba(200,145,58,0.9); }
+  }
 </style>
 </head>
 <body>
+
+<!-- Hidden YouTube Player -->
+<iframe id="ytPlayer"
+  src=""
+  style="display:none"
+  allow="autoplay">
+</iframe>
+
+<!-- Music Toggle Button -->
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Music">🎵</button>
 
 <div class="petal" style="left:5%;  animation-duration:9s;  animation-delay:0s;">&#x1F338;</div>
 <div class="petal" style="left:15%; animation-duration:12s; animation-delay:2s;">&#x1F33A;</div>
@@ -113,8 +140,8 @@
   </div>
 
   <div class="photo-wrap">
-  <img src="./anime_image/nandu1.jpeg" alt="">
-</div>
+    <img src="./anime_image/nandu1.jpeg" alt="">
+  </div>
 
   <div class="bottom-section">
     <div class="quote">
@@ -126,11 +153,45 @@
 
   <div class="sparkles">&#x1F338; &#x2728; &#x1F338;</div>
 
-  <!-- Tum apna path yahan dena -->
   <a class="next-btn" href="page7.html">Next &#x279C;</a>
 </div>
 
 <script>
+  var isPlaying = false;
+  var musicStarted = false;
+
+  // Autoplay on first user interaction (browser policy)
+  function startMusicOnce() {
+    if (!musicStarted) {
+      musicStarted = true;
+      playMusic();
+    }
+  }
+  document.addEventListener('click', startMusicOnce, { once: true });
+  document.addEventListener('touchstart', startMusicOnce, { once: true });
+
+  function playMusic() {
+   var audio = document.getElementById('ytPlayer');
+   audio.src = "./audio/nandu1.mp4";
+   audio.play();
+    isPlaying = true;
+    document.getElementById('musicBtn').textContent = '🔊';
+  }
+
+  function toggleMusic() {
+    var audio = document.getElementById('ytPlayer');
+    if (!musicStarted || !isPlaying) {
+      playMusic();
+      musicStarted = true;
+    } else {
+      audio.pause();
+      audio.src = '';
+      isPlaying = false;
+      document.getElementById('musicBtn').textContent = '🎵';
+    }
+  }
+
+  // Confetti on load
   window.addEventListener('load', function() {
     var e = ['&#x1F338;','&#x1F33A;','&#x1F33C;','&#x2728;','&#x1F49B;','&#x1F337;','&#x1F490;','&#x2B50;'];
     for (var i = 0; i < 25; i++) {
