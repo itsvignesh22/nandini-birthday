@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ Photo Frame</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09090d;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: rgba(255,255,255,0.06);
+    --pink: #ff6b9d;
+    --pink-dim: rgba(255,107,157,0.11);
+    --glow: rgba(255,107,157,0.22);
+    --text: #f0eef5;
+    --muted: #4a4858;
+    --accent: #c084fc;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+  }
+
+  #rainCanvas {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025; pointer-events: none; z-index: 1;
+  }
+
+  .blob { position: fixed; border-radius: 50%; filter: blur(110px); pointer-events: none; z-index: 0; }
+  .blob-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,157,0.13), transparent 70%);
+    top: -140px; left: -120px;
+    animation: drift 16s ease-in-out infinite alternate;
+  }
+  .blob-2 {
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(192,132,252,0.1), transparent 70%);
+    bottom: -90px; right: -80px;
+    animation: drift 20s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes drift { from{transform:translate(0,0)} to{transform:translate(40px,30px)} }
+
+  .page {
+    position: relative; z-index: 2;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 48px 20px 64px;
+    gap: 32px;
+  }
+
+  /* ── Header ── */
+  header { text-align: center; animation: fadeUp 0.7s ease both; }
+  header .eyebrow {
+    font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--pink); font-weight: 700; margin-bottom: 10px; display: block; opacity: 0.8;
+  }
+  header h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(1.9rem, 6vw, 2.8rem);
+    background: linear-gradient(135deg, #ff6b9d, #c084fc, #ff9ec4);
+    background-size: 200%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: shimmer 5s linear infinite;
+  }
+  @keyframes shimmer { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+  header p { margin-top: 8px; font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+
+  /* ── Frame section ── */
+  .frame-section {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 28px; width: 100%; max-width: 340px;
+    animation: fadeUp 0.7s 0.15s ease both;
+  }
+
+  /* Portrait wrapper — 3:4 ratio (1070:1427 ≈ 3:4) */
+  .frame-outer {
+    position: relative;
+    width: 100%;
+    padding-bottom: 133.33%; /* 4/3 * 100 = portrait */
+  }
+
+  /* Emoji border — sits outside */
+  .emoji-border {
+    position: absolute; inset: -24px;
+    pointer-events: none; z-index: 5;
+  }
+  .eb-emoji {
+    position: absolute; font-size: 1.5rem; line-height: 1;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+  }
+  .eb-emoji.tl { top: 6px;    left: 6px; }
+  .eb-emoji.tr { top: 6px;    right: 6px; }
+  .eb-emoji.bl { bottom: 6px; left: 6px; }
+  .eb-emoji.br { bottom: 6px; right: 6px; }
+  .eb-emoji.t1 { top: 6px;    left: 50%; transform: translateX(-50%); }
+  .eb-emoji.b1 { bottom: 6px; left: 50%; transform: translateX(-50%); }
+  .eb-emoji.l1 { left: 6px;   top: 50%;  transform: translateY(-50%); }
+  .eb-emoji.r1 { right: 6px;  top: 50%;  transform: translateY(-50%); }
+  /* left middle-upper */
+  .eb-emoji.l2 { left: 6px;   top: 28%;  transform: translateY(-50%); }
+  .eb-emoji.r2 { right: 6px;  top: 28%;  transform: translateY(-50%); }
+  .eb-emoji.l3 { left: 6px;   top: 72%;  transform: translateY(-50%); }
+  .eb-emoji.r3 { right: 6px;  top: 72%;  transform: translateY(-50%); }
+
+  .eb-emoji.tl { animation: ebA 3.0s ease-in-out infinite alternate; }
+  .eb-emoji.tr { animation: ebA 3.3s ease-in-out infinite alternate-reverse; }
+  .eb-emoji.bl { animation: ebA 2.8s ease-in-out infinite alternate; }
+  .eb-emoji.br { animation: ebA 3.6s ease-in-out infinite alternate-reverse; }
+  .eb-emoji.t1,.eb-emoji.b1 { animation: ebMH 3.1s ease-in-out infinite alternate; }
+  .eb-emoji.l1,.eb-emoji.r1 { animation: ebMV 3.4s ease-in-out infinite alternate-reverse; }
+  .eb-emoji.l2,.eb-emoji.r2 { animation: ebMV 2.9s ease-in-out infinite alternate; }
+  .eb-emoji.l3,.eb-emoji.r3 { animation: ebMV 3.7s ease-in-out infinite alternate-reverse; }
+
+  @keyframes ebA  { from{transform:scale(1) rotate(-6deg)} to{transform:scale(1.15) rotate(6deg) translateY(-4px)} }
+  @keyframes ebMH { from{transform:translateX(-50%) scale(1) rotate(-6deg)} to{transform:translateX(-50%) scale(1.15) rotate(6deg)} }
+  @keyframes ebMV { from{transform:translateY(-50%) scale(1) rotate(-6deg)} to{transform:translateY(-50%) scale(1.15) rotate(6deg)} }
+
+  /* The frame box */
+  .frame-box {
+    position: absolute; inset: 0;
+    border-radius: 22px;
+    border: 2px solid rgba(255,107,157,0.28);
+    background: var(--surface2);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 10px 48px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  /* Photo — portrait, covers full frame */
+  .frame-photo {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top; /* face at top */
+    display: none;
+    border-radius: 20px;
+  }
+  .frame-photo.visible { display: block; }
+
+  /* Empty state */
+  .frame-empty {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px; color: var(--muted);
+    text-align: center; padding: 24px; pointer-events: none;
+  }
+  .frame-empty .icon { font-size: 2.6rem; margin-bottom: 4px; animation: iconFloat 3s ease-in-out infinite; }
+  @keyframes iconFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  .frame-empty p    { font-size: 0.82rem; font-weight: 700; color: #35333f; }
+  .frame-empty .hint { font-size: 0.7rem; color: #28272f; }
+
+  /* Stickers inside frame */
+  .frame-sticker {
+    position: absolute; font-size: 2rem;
+    cursor: grab; user-select: none; z-index: 10;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.55));
+    animation: stickerIdle 3s ease-in-out infinite alternate;
+  }
+  .frame-sticker:active { cursor: grabbing; }
+  @keyframes stickerIdle { from{transform:rotate(-5deg) scale(1)} to{transform:rotate(5deg) scale(1.1)} }
+
+  .burst-particle {
+    position: absolute; font-size: 1rem;
+    pointer-events: none; z-index: 20;
+    animation: burstOut 0.9s ease forwards;
+  }
+  @keyframes burstOut { 0%{opacity:1;transform:translate(0,0) scale(1)} 100%{opacity:0;transform:var(--tx) scale(0.4)} }
+
+  /* ── Sticker tray ── */
+  .sticker-tray {
+    width: 100%; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 18px;
+    padding: 14px 18px;
+    display: flex; flex-direction: column; gap: 11px;
+    animation: fadeUp 0.7s 0.25s ease both;
+  }
+  .tray-label { font-family: 'Pacifico', cursive; font-size: 0.8rem; color: var(--pink); opacity: 0.7; }
+  .sticker-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sticker-btn {
+    width: 42px; height: 42px; border-radius: 12px;
+    border: 1px solid var(--border); background: var(--surface2);
+    font-size: 1.25rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.18s ease;
+  }
+  .sticker-btn:hover { background: var(--pink-dim); border-color: rgba(255,107,157,0.4); transform: scale(1.18) rotate(-6deg); box-shadow: 0 0 14px var(--glow); }
+  .sticker-btn:active { transform: scale(0.92); }
+
+  /* ── Actions ── */
+  .actions {
+    width: 100%; max-width: 340px;
+    display: flex; flex-direction: column; gap: 10px;
+    animation: fadeUp 0.7s 0.35s ease both;
+  }
+  .btn-next {
+    position: relative; width: 100%;
+    padding: 16px 24px; border-radius: 14px; border: none;
+    background: linear-gradient(135deg, var(--pink) 0%, var(--accent) 100%);
+    color: white; font-family: 'Pacifico', cursive;
+    font-size: 1.05rem; font-weight: 400; letter-spacing: 0.5px;
+    cursor: pointer; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 32px rgba(255,107,157,0.28);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .btn-next::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(255,107,157,0.42); }
+  .btn-next:hover::before { opacity: 1; }
+  .btn-next:active { transform: scale(0.98); }
+  .btn-next .arrow {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-family: sans-serif;
+    transition: transform 0.2s;
+  }
+  .btn-next:hover .arrow { transform: translateX(4px); }
+  .btn-hint { text-align: center; font-size: 0.7rem; color: #28272f; font-weight: 600; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  #fileInput { display: none; }
+</style>
+</head>
+<body>
+
+<canvas id="rainCanvas"></canvas>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="page">
+
+  <header>
+    <span class="eyebrow">✦ for someone special ✦</span>
+    <h1>Your Photo ✨</h1>
+    <p>stickers lagao, cute banao 🌸</p>
+  </header>
+
+  <div class="frame-section">
+    <div class="frame-outer" id="frameOuter">
+
+      <!-- Emoji border — more emojis on sides since portrait is taller -->
+      <div class="emoji-border">
+        <span class="eb-emoji tl">🌸</span>
+        <span class="eb-emoji tr">💖</span>
+        <span class="eb-emoji bl">✨</span>
+        <span class="eb-emoji br">🌷</span>
+        <span class="eb-emoji t1">🐰</span>
+        <span class="eb-emoji b1">⭐</span>
+        <span class="eb-emoji l1">🦋</span>
+        <span class="eb-emoji r1">🎀</span>
+        <span class="eb-emoji l2">💕</span>
+        <span class="eb-emoji r2">🍓</span>
+        <span class="eb-emoji l3">🌙</span>
+        <span class="eb-emoji r3">💫</span>
+      </div>
+
+      <div class="frame-box" id="frameBox">
+        <div class="frame-empty" id="emptyState">
+          <div class="icon">🖼️</div>
+          <p>Photo yahan aayegi</p>
+          <span class="hint">link baad mein lagana hai</span>
+        </div>
+
+        <!-- Replace src with your photo link -->
+        <img
+          class="frame-photo"
+          id="framePhoto"
+          src="./anime_image/cutenandini.jpeg"
+          alt="photo"
+          onload="onPhotoLoad(this)"
+          onerror="this.style.display='none'"
+        />
+      </div>
+    </div>
+
+    <div class="sticker-tray">
+      <span class="tray-label">stickers ✨</span>
+      <div class="sticker-grid" id="stickerGrid"></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-next" onclick="goNext()">
+      Next
+      <div class="arrow">→</div>
+    </button>
+    <p class="btn-hint">aage jaane ke liye tap karo 🌸</p>
+  </div>
+
+</div>
+
+<input type="file" id="fileInput" accept="image/*">
+
+<script>
+  const NEXT_PAGE_URL = 'page7.html';
+
+  /* ── Stickers ── */
+  const STICKERS = ['🌸','💖','⭐','🐰','🦋','🍓','🌈','✨','🎀','🍡','🫧','🌷','💫','🍰','🐣'];
+  const grid = document.getElementById('stickerGrid');
+  STICKERS.forEach(emoji => {
+    const btn = document.createElement('button');
+    btn.className = 'sticker-btn';
+    btn.textContent = emoji;
+    btn.addEventListener('click', () => spawnSticker(emoji));
+    grid.appendChild(btn);
+  });
+
+  /* ── Heart & Flower Rain ── */
+  const canvas = document.getElementById('rainCanvas');
+  const ctx2d  = canvas.getContext('2d');
+  const DROPS_EMOJI = ['💖','🌸','✨','💕','🌷','⭐','💫'];
+  const drops = [];
+
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  for (let i = 0; i < 40; i++) {
+    drops.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight * 1.5 - window.innerHeight * 0.5,
+      speed: 0.5 + Math.random() * 0.9,
+      size: 12 + Math.random() * 14,
+      emoji: DROPS_EMOJI[Math.floor(Math.random() * DROPS_EMOJI.length)],
+      opacity: 0.1 + Math.random() * 0.2,
+      sway: Math.random() * Math.PI * 2,
+      swaySpeed: 0.007 + Math.random() * 0.011,
+      swayAmp: 16 + Math.random() * 24,
+    });
+  }
+
+  function animateRain() {
+    ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+    drops.forEach(d => {
+      d.sway += d.swaySpeed;
+      d.y += d.speed;
+      const sx = d.x + Math.sin(d.sway) * d.swayAmp;
+      if (d.y > canvas.height + 40) {
+        d.y = -40; d.x = Math.random() * canvas.width;
+        d.emoji = DROPS_EMOJI[Math.floor(Math.random() * DROPS_EMOJI.length)];
+      }
+      ctx2d.save();
+      ctx2d.globalAlpha = d.opacity;
+      ctx2d.font = `${d.size}px serif`;
+      ctx2d.fillText(d.emoji, sx, d.y);
+      ctx2d.restore();
+    });
+    requestAnimationFrame(animateRain);
+  }
+  animateRain();
+
+  /* ── Photo load ── */
+  function onPhotoLoad(img) {
+    if (img.src.includes('YOUR_PHOTO_LINK_HERE')) return;
+    img.classList.add('visible');
+    document.getElementById('emptyState').style.display = 'none';
+    burstEffect();
+  }
+
+  function burstEffect() {
+    const box = document.getElementById('frameBox');
+    const cx = box.clientWidth / 2, cy = box.clientHeight / 2;
+    ['💖','✨','🌸','⭐','💫','🌷'].forEach((p, i) => {
+      const el = document.createElement('div');
+      el.className = 'burst-particle'; el.textContent = p;
+      const angle = (i / 6) * Math.PI * 2;
+      const dist = 70 + Math.random() * 50;
+      el.style.left = cx + 'px'; el.style.top = cy + 'px';
+      el.style.setProperty('--tx', `translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px)`);
+      el.style.animationDelay = (i * 0.07) + 's';
+      box.appendChild(el);
+      setTimeout(() => el.remove(), 1100);
+    });
+  }
+
+  /* ── Sticker spawn ── */
+  function spawnSticker(emoji) {
+    const box = document.getElementById('frameBox');
+    const s = document.createElement('div');
+    s.className = 'frame-sticker';
+    s.textContent = emoji;
+    s.style.left = (18 + Math.random() * 58) + '%';
+    s.style.top  = (14 + Math.random() * 60) + '%';
+    s.style.animationDelay = (Math.random() * 2) + 's';
+    box.appendChild(s);
+    makeDraggable(s, box);
+    s.addEventListener('dblclick', () => s.remove());
+    s.style.transform = 'scale(0)';
+    s.style.transition = 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1)';
+    requestAnimationFrame(() => { s.style.transform = ''; });
+  }
+
+  /* ── Drag ── */
+  function makeDraggable(el, parent) {
+    let dragging = false, ox = 0, oy = 0;
+    el.addEventListener('mousedown', e => {
+      dragging = true;
+      const pr = parent.getBoundingClientRect();
+      ox = e.clientX - (parseFloat(el.style.left)/100 * pr.width  + pr.left);
+      oy = e.clientY - (parseFloat(el.style.top) /100 * pr.height + pr.top);
+      el.style.animation = 'none'; el.style.zIndex = 50; e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const pr = parent.getBoundingClientRect();
+      el.style.left = Math.max(0, Math.min(90, ((e.clientX-pr.left-ox)/pr.width)*100))  + '%';
+      el.style.top  = Math.max(0, Math.min(88, ((e.clientY-pr.top-oy) /pr.height)*100)) + '%';
+    });
+    document.addEventListener('mouseup', () => { if(dragging){dragging=false;el.style.animation='';el.style.zIndex=10;} });
+    el.addEventListener('touchstart', e => {
+      dragging = true;
+      const t = e.touches[0], pr = parent.getBoundingClientRect();
+      ox = t.clientX - (parseFloat(el.style.left)/100*pr.width  + pr.left);
+      oy = t.clientY - (parseFloat(el.style.top) /100*pr.height + pr.top);
+      el.style.animation = 'none'; el.style.zIndex = 50;
+    }, {passive:true});
+    document.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const t = e.touches[0], pr = parent.getBoundingClientRect();
+      el.style.left = Math.max(0, Math.min(90, ((t.clientX-pr.left-ox)/pr.width)*100))  + '%';
+      el.style.top  = Math.max(0, Math.min(88, ((t.clientY-pr.top-oy) /pr.height)*100)) + '%';
+    }, {passive:true});
+    document.addEventListener('touchend', () => { dragging = false; });
+  }
+
+  function goNext() { window.location.href = NEXT_PAGE_URL; }
+
+  window.addEventListener('load', () => {
+    const img = document.getElementById('framePhoto');
+    if (img.src && !img.src.includes('YOUR_PHOTO_LINK_HERE')) img.style.display = 'block';
+  });
+</script>
+</body>
+</html>
