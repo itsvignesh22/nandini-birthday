@@ -4,23 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nandini's Diary 🌸</title>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1SCG3SJYBB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-1SCG3SJYBB');
-</script>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Nunito',sans-serif;overflow:hidden;height:100vh;background:#fff}
-
 .screen{width:100vw;height:100vh;display:none;align-items:center;justify-content:center;position:absolute;top:0;left:0;overflow:hidden}
 .screen.active{display:flex}
-
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes pop{from{opacity:0;transform:scale(0.75)}to{opacity:1;transform:scale(1)}}
 @keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
@@ -31,11 +20,19 @@ body{font-family:'Nunito',sans-serif;overflow:hidden;height:100vh;background:#ff
 @keyframes rainFall{0%{transform:translateY(-60px) translateX(0) rotate(0deg) scale(0.7);opacity:0}8%{opacity:0.9}92%{opacity:0.75}100%{transform:translateY(108vh) translateX(var(--swing,0px)) rotate(25deg) scale(1.05);opacity:0}}
 @keyframes sparkleOut{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1.5);opacity:0}}
 @keyframes slideInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pageFlip{0%{transform:perspective(1000px) rotateY(0deg);opacity:1}100%{transform:perspective(1000px) rotateY(-90deg);opacity:0}}
 @keyframes diaryOpen{0%{transform:perspective(1000px) rotateY(90deg);opacity:0}100%{transform:perspective(1000px) rotateY(0deg);opacity:1}}
-@keyframes inkAppear{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.drop{position:fixed;top:-60px;pointer-events:none;z-index:999;user-select:none;animation:rainFall linear infinite;opacity:0}
+.drop{position:fixed;top:-60px;pointer-events:none;z-index:998;user-select:none;animation:rainFall linear infinite;opacity:0}
+
+.saved-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;padding:10px 26px;border-radius:30px;font-family:'Caveat',cursive;font-size:20px;box-shadow:0 4px 16px rgba(0,0,0,.25);z-index:9999;transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;}
+.saved-toast.show{transform:translateX(-50%) translateY(0);}
+
+/* loading overlay */
+.loading-overlay{position:fixed;inset:0;background:rgba(252,228,236,.92);backdrop-filter:blur(4px);z-index:10000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.loading-overlay.show{display:flex;}
+.spinner{width:40px;height:40px;border:4px solid #f48fb1;border-top-color:#ec407a;border-radius:50%;animation:spin .8s linear infinite;}
+.loading-text{font-family:'Kalam',cursive;font-size:18px;color:#c2185b;}
 
 /* ══ S1: PIN ══ */
 #s1{background:linear-gradient(145deg,#fff5f8 0%,#fce4ec 50%,#fff0f5 100%);flex-direction:column;}
@@ -67,409 +64,60 @@ body{font-family:'Nunito',sans-serif;overflow:hidden;height:100vh;background:#ff
 .sp{position:absolute;font-size:18px;animation:float linear infinite;opacity:.7;}
 
 /* ══ S3: DIARY ══ */
-#s3{
-  background: linear-gradient(135deg, #2d1b4e 0%, #4a1942 50%, #2d1b4e 100%);
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-}
-
-/* diary cover when closed */
-.diary-cover-wrap{
-  position: relative;
-  cursor: pointer;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  animation: bounceIn .8s ease;
-}
-.diary-cover{
-  width: 220px;
-  height: 280px;
-  background: linear-gradient(160deg, #e91e63 0%, #c2185b 40%, #880e4f 100%);
-  border-radius: 4px 16px 16px 4px;
-  box-shadow: -6px 0 0 #6d0d3e, -8px 4px 20px rgba(0,0,0,.5), 0 8px 32px rgba(233,30,99,.4);
-  position: relative;
-  overflow: visible;
-  transition: transform .3s;
-  animation: float 4s ease-in-out infinite;
-}
-.diary-cover:hover{ transform: scale(1.04) rotate(1deg); }
-
-/* spine */
-.diary-cover::before{
-  content:'';
-  position:absolute;
-  left:-6px; top:0; bottom:0;
-  width:6px;
-  background: linear-gradient(to right, #4a0829, #880e4f);
-  border-radius: 4px 0 0 4px;
-}
-
-/* cover texture lines */
-.diary-cover::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 18px,
-    rgba(255,255,255,.04) 18px,
-    rgba(255,255,255,.04) 19px
-  );
-  border-radius: 4px 16px 16px 4px;
-}
-
-.diary-lock{
-  position: absolute;
-  right: -14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 28px; height: 36px;
-  background: linear-gradient(135deg, #ffd54f, #ffb300);
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.3);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-  z-index: 3;
-}
-.diary-lock::before{
-  content:'';
-  position:absolute;
-  top:-12px;
-  width:16px; height:14px;
-  border: 3px solid #ffb300;
-  border-radius: 8px 8px 0 0;
-  background: transparent;
-}
-
-.diary-cover-content{
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  z-index: 2;
-}
-.diary-title-text{
-  font-family: 'Kalam', cursive;
-  font-size: 26px;
-  color: #fff;
-  font-weight: 700;
-  text-shadow: 0 2px 8px rgba(0,0,0,.3);
-  text-align: center;
-  line-height: 1.3;
-}
-.diary-subtitle{
-  font-family: 'Kalam', cursive;
-  font-size: 14px;
-  color: rgba(255,255,255,.75);
-  text-align: center;
-}
-.diary-deco{
-  font-size: 28px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,.2));
-}
-/* flowers on cover */
-.cover-flower{
-  position: absolute;
-  font-size: 22px;
-  opacity: .6;
-}
-
-.diary-open-hint{
-  font-family: 'Caveat', cursive;
-  font-size: 18px;
-  color: rgba(255,255,255,.7);
-  text-align: center;
-  animation: float 2.5s ease-in-out infinite;
-}
-
-/* ══ DIARY OPEN (writing mode) ══ */
-.diary-open-wrap{
-  display: none;
-  width: min(680px, 96vw);
-  height: min(520px, 90vh);
-  position: relative;
-  z-index: 2;
-  animation: diaryOpen .5s ease;
-  flex-direction: row;
-}
-
-/* left page (decorative) */
-.diary-page-left{
-  width: 44px;
-  background: linear-gradient(to right, #f9e4ec, #fce4ec);
-  border-radius: 12px 0 0 12px;
-  box-shadow: inset -4px 0 10px rgba(0,0,0,.08);
-  position: relative;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 16px;
-  gap: 4px;
-}
-.diary-page-left::after{
-  content: '';
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #f48fb1,
-    #f48fb1 6px,
-    transparent 6px,
-    transparent 12px
-  );
-}
-.spine-letter{
-  writing-mode: vertical-rl;
-  font-family: 'Kalam', cursive;
-  font-size: 13px;
-  color: #e91e63;
-  opacity: .6;
-  letter-spacing: 3px;
-  margin-top: 20px;
-}
-
-/* right page (writing area) */
-.diary-page-right{
-  flex: 1;
-  background: #fffef7;
-  border-radius: 0 12px 12px 0;
-  box-shadow: 0 8px 40px rgba(0,0,0,.25);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
-}
-
-/* lined paper effect */
-.diary-page-right::before{
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 31px,
-    #e8d5f5 31px,
-    #e8d5f5 32px
-  );
-  pointer-events: none;
-  z-index: 0;
-  top: 72px;
-}
-
-/* red margin line */
-.diary-page-right::after{
-  content: '';
-  position: absolute;
-  left: 48px;
-  top: 0; bottom: 0;
-  width: 2px;
-  background: rgba(255,100,100,.25);
-  z-index: 0;
-}
-
-.diary-top-bar{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px 8px 56px;
-  border-bottom: 2px solid #f8bbd0;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 2;
-  background: linear-gradient(to right, #fff9fc, #fffef7);
-}
-.entry-date-label{
-  font-family: 'Kalam', cursive;
-  font-size: 14px;
-  color: #c2185b;
-  font-weight: 700;
-}
-.entry-nav{
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-.nav-btn{
-  background: none;
-  border: 1.5px solid #f48fb1;
-  border-radius: 20px;
-  padding: 3px 10px;
-  font-family: 'Caveat', cursive;
-  font-size: 16px;
-  color: #c2185b;
-  cursor: pointer;
-  transition: all .2s;
-}
-.nav-btn:hover{ background: #fce4ec; }
-.new-entry-btn{
-  background: linear-gradient(135deg, #f48fb1, #ec407a);
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  padding: 4px 14px;
-  font-family: 'Caveat', cursive;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all .2s;
-  box-shadow: 0 2px 8px rgba(236,64,122,.3);
-}
-.new-entry-btn:hover{ transform: scale(1.05); }
-.close-diary-btn{
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  opacity: .6;
-  transition: opacity .2s;
-  padding: 2px 6px;
-}
-.close-diary-btn:hover{ opacity: 1; }
-
-.diary-entries-list{
-  display: none;
-  overflow-y: auto;
-  flex: 1;
-  padding: 12px 16px 12px 56px;
-  position: relative;
-  z-index: 1;
-}
+#s3{background:linear-gradient(135deg,#2d1b4e 0%,#4a1942 50%,#2d1b4e 100%);flex-direction:column;align-items:center;justify-content:center;gap:0;}
+.diary-cover-wrap{position:relative;cursor:pointer;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px;animation:bounceIn .8s ease;}
+.diary-cover{width:220px;height:280px;background:linear-gradient(160deg,#e91e63 0%,#c2185b 40%,#880e4f 100%);border-radius:4px 16px 16px 4px;box-shadow:-6px 0 0 #6d0d3e,-8px 4px 20px rgba(0,0,0,.5),0 8px 32px rgba(233,30,99,.4);position:relative;overflow:visible;transition:transform .3s;animation:float 4s ease-in-out infinite;}
+.diary-cover:hover{transform:scale(1.04) rotate(1deg);}
+.diary-cover::before{content:'';position:absolute;left:-6px;top:0;bottom:0;width:6px;background:linear-gradient(to right,#4a0829,#880e4f);border-radius:4px 0 0 4px;}
+.diary-cover::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 18px,rgba(255,255,255,.04) 18px,rgba(255,255,255,.04) 19px);border-radius:4px 16px 16px 4px;}
+.diary-lock{position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:28px;height:36px;background:linear-gradient(135deg,#ffd54f,#ffb300);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:16px;z-index:3;}
+.diary-lock::before{content:'';position:absolute;top:-12px;width:16px;height:14px;border:3px solid #ffb300;border-radius:8px 8px 0 0;background:transparent;}
+.diary-cover-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:2;}
+.diary-title-text{font-family:'Kalam',cursive;font-size:26px;color:#fff;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3);text-align:center;line-height:1.3;}
+.diary-subtitle{font-family:'Kalam',cursive;font-size:14px;color:rgba(255,255,255,.75);text-align:center;}
+.diary-deco{font-size:28px;}
+.cover-flower{position:absolute;font-size:22px;opacity:.6;}
+.diary-open-hint{font-family:'Caveat',cursive;font-size:18px;color:rgba(255,255,255,.7);text-align:center;animation:float 2.5s ease-in-out infinite;}
+.diary-open-wrap{display:none;width:min(680px,96vw);height:min(520px,90vh);position:relative;z-index:2;flex-direction:row;}
+.diary-page-left{width:44px;background:linear-gradient(to right,#f9e4ec,#fce4ec);border-radius:12px 0 0 12px;box-shadow:inset -4px 0 10px rgba(0,0,0,.08);position:relative;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:16px;}
+.diary-page-left::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:repeating-linear-gradient(to bottom,#f48fb1,#f48fb1 6px,transparent 6px,transparent 12px);}
+.spine-letter{writing-mode:vertical-rl;font-family:'Kalam',cursive;font-size:13px;color:#e91e63;opacity:.6;letter-spacing:3px;margin-top:20px;}
+.diary-page-right{flex:1;background:#fffef7;border-radius:0 12px 12px 0;box-shadow:0 8px 40px rgba(0,0,0,.25);display:flex;flex-direction:column;overflow:hidden;position:relative;}
+.diary-page-right::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent,transparent 31px,#e8d5f5 31px,#e8d5f5 32px);pointer-events:none;z-index:0;top:72px;}
+.diary-page-right::after{content:'';position:absolute;left:48px;top:0;bottom:0;width:2px;background:rgba(255,100,100,.25);z-index:0;}
+.diary-top-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px 56px;border-bottom:2px solid #f8bbd0;flex-shrink:0;position:relative;z-index:2;background:linear-gradient(to right,#fff9fc,#fffef7);}
+.entry-date-label{font-family:'Kalam',cursive;font-size:14px;color:#c2185b;font-weight:700;}
+.entry-nav{display:flex;gap:6px;align-items:center;}
+.nav-btn{background:none;border:1.5px solid #f48fb1;border-radius:20px;padding:3px 10px;font-family:'Caveat',cursive;font-size:16px;color:#c2185b;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{background:#fce4ec;}
+.new-entry-btn{background:linear-gradient(135deg,#f48fb1,#ec407a);color:#fff;border:none;border-radius:20px;padding:4px 14px;font-family:'Caveat',cursive;font-size:16px;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(236,64,122,.3);}
+.close-diary-btn{background:none;border:none;font-size:18px;cursor:pointer;opacity:.6;transition:opacity .2s;padding:2px 6px;}
+.diary-entries-list{display:none;overflow-y:auto;flex:1;padding:12px 16px 12px 56px;position:relative;z-index:1;}
 .diary-entries-list::-webkit-scrollbar{width:4px}
 .diary-entries-list::-webkit-scrollbar-thumb{background:#f48fb1;border-radius:4px}
-
-.entry-card{
-  margin-bottom: 16px;
-  padding: 10px 14px;
-  background: rgba(252,228,236,.3);
-  border-left: 3px solid #f48fb1;
-  border-radius: 0 8px 8px 0;
-  cursor: pointer;
-  transition: all .2s;
-  animation: slideInUp .3s ease;
-}
-.entry-card:hover{ background: rgba(252,228,236,.6); transform: translateX(3px); }
-.entry-card-date{
-  font-family: 'Kalam', cursive;
-  font-size: 12px;
-  color: #e91e63;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-.entry-card-preview{
-  font-family: 'Kalam', cursive;
-  font-size: 15px;
-  color: #555;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.diary-write-area{
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 16px 10px 56px;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-}
-.write-date-header{
-  font-family: 'Kalam', cursive;
-  font-size: 15px;
-  color: #c2185b;
-  margin-bottom: 8px;
-  font-weight: 700;
-}
-.diary-textarea{
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-family: 'Kalam', cursive;
-  font-size: 17px;
-  color: #333;
-  line-height: 32px;
-  resize: none;
-  width: 100%;
-  caret-color: #e91e63;
-}
-.diary-textarea::placeholder{
-  color: #ccc;
-  font-style: italic;
-}
-.write-bottom{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 8px;
-  border-top: 1px solid #fce4ec;
-  flex-shrink: 0;
-}
-.char-count{
-  font-family: 'Kalam', cursive;
-  font-size: 13px;
-  color: #ccc;
-}
-.save-btn{
-  background: linear-gradient(135deg, #f48fb1, #ec407a);
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  padding: 6px 20px;
-  font-family: 'Caveat', cursive;
-  font-size: 18px;
-  cursor: pointer;
-  box-shadow: 0 3px 10px rgba(236,64,122,.3);
-  transition: all .2s;
-}
-.save-btn:hover{ transform: scale(1.06); }
-
-.diary-bottom-msg{
-  font-family: 'Kalam', cursive;
-  font-size: 13px;
-  color: rgba(255,255,255,.55);
-  text-align: center;
-  max-width: 320px;
-  line-height: 1.6;
-  z-index: 2;
-  margin-top: 10px;
-  animation: fadeIn 1s ease 0.5s both;
-  padding: 0 16px;
-}
-
-.saved-toast{
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%) translateY(60px);
-  background: linear-gradient(135deg, #43a047, #2e7d32);
-  color: #fff;
-  padding: 10px 24px;
-  border-radius: 30px;
-  font-family: 'Caveat', cursive;
-  font-size: 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.2);
-  z-index: 1000;
-  transition: transform .3s ease;
-  pointer-events: none;
-}
-.saved-toast.show{ transform: translateX(-50%) translateY(0); }
+.entry-card{margin-bottom:16px;padding:10px 14px;background:rgba(252,228,236,.3);border-left:3px solid #f48fb1;border-radius:0 8px 8px 0;cursor:pointer;transition:all .2s;}
+.entry-card:hover{background:rgba(252,228,236,.6);transform:translateX(3px);}
+.entry-card-date{font-family:'Kalam',cursive;font-size:12px;color:#e91e63;font-weight:700;margin-bottom:4px;}
+.entry-card-preview{font-family:'Kalam',cursive;font-size:15px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.diary-write-area{flex:1;display:flex;flex-direction:column;padding:10px 16px 10px 56px;position:relative;z-index:1;overflow:hidden;}
+.write-date-header{font-family:'Kalam',cursive;font-size:15px;color:#c2185b;margin-bottom:8px;font-weight:700;}
+.diary-textarea{flex:1;border:none;outline:none;background:transparent;font-family:'Kalam',cursive;font-size:17px;color:#333;line-height:32px;resize:none;width:100%;caret-color:#e91e63;}
+.diary-textarea::placeholder{color:#ccc;font-style:italic;}
+.write-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid #fce4ec;flex-shrink:0;}
+.char-count{font-family:'Kalam',cursive;font-size:13px;color:#ccc;}
+.save-btn{background:linear-gradient(135deg,#f48fb1,#ec407a);color:#fff;border:none;border-radius:20px;padding:6px 20px;font-family:'Caveat',cursive;font-size:18px;cursor:pointer;box-shadow:0 3px 10px rgba(236,64,122,.3);transition:all .2s;}
+.save-btn:hover{transform:scale(1.06);}
+.diary-bottom-msg{font-family:'Kalam',cursive;font-size:13px;color:rgba(255,255,255,.55);text-align:center;max-width:320px;line-height:1.6;z-index:2;margin-top:10px;padding:0 16px;}
 </style>
 </head>
 <body>
 
-<!-- <div class="saved-toast" id="toast">✓ Saved in your diary 🌸</div> -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Loading your diary... 🌸</div>
+</div>
+
+<div class="saved-toast" id="toast">✓ Saved 🌸</div>
 
 <!-- S1: PIN -->
 <div id="s1" class="screen active">
@@ -529,10 +177,6 @@ body{font-family:'Nunito',sans-serif;overflow:hidden;height:100vh;background:#ff
         <circle cx="90" cy="64" r="10" fill="url(#bowCG)"/>
         <circle cx="90" cy="64" r="6" fill="#ff80ab" opacity=".8"/>
         <circle cx="87" cy="61" r="2.5" fill="#fff" opacity=".5"/>
-        <ellipse cx="55" cy="75" rx="18" ry="5" fill="#fff" opacity=".22" transform="rotate(-5,55,75)"/>
-        <circle cx="45" cy="105" r="5" fill="#f48fb1" opacity=".35"/>
-        <circle cx="140" cy="120" r="4" fill="#f48fb1" opacity=".3"/>
-        <circle cx="50" cy="145" r="4" fill="#f48fb1" opacity=".28"/>
         <defs>
           <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0f5"/><stop offset="1" stop-color="#fce4ec"/></linearGradient>
           <linearGradient id="lidGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8bbd0"/><stop offset="1" stop-color="#f48fb1"/></linearGradient>
@@ -549,8 +193,6 @@ body{font-family:'Nunito',sans-serif;overflow:hidden;height:100vh;background:#ff
 
 <!-- S3: DIARY -->
 <div id="s3" class="screen">
-
-  <!-- DIARY COVER (shown first) -->
   <div class="diary-cover-wrap" id="diaryCoverWrap" onclick="openDiary()">
     <div class="diary-cover">
       <span class="cover-flower" style="top:12px;left:14px;">🌸</span>
@@ -560,42 +202,32 @@ body{font-family:'Nunito',sans-serif;overflow:hidden;height:100vh;background:#ff
       <div class="diary-lock">🔓</div>
       <div class="diary-cover-content">
         <div class="diary-deco">📖</div>
-        <div class="diary-title-text">Apka Diary<br>🌸</div>
-        <div class="diary-subtitle">Only for Nandini/bhomi/khushi</div>
+        <div class="diary-title-text">My Diary<br>🌸</div>
+        <div class="diary-subtitle">Only for Nandini/Bhomi/Khushi</div>
       </div>
     </div>
     <div class="diary-open-hint">✨ Tap to open your diary</div>
   </div>
 
-  <!-- DIARY OPEN -->
   <div class="diary-open-wrap" id="diaryOpenWrap">
-    <!-- spine -->
     <div class="diary-page-left">
       <div class="spine-letter">MY DIARY</div>
     </div>
-    <!-- writing area -->
     <div class="diary-page-right">
       <div class="diary-top-bar">
         <div class="entry-date-label" id="topDateLabel">📅 Today</div>
         <div class="entry-nav">
           <button class="nav-btn" onclick="showEntriesList()">📋 All</button>
           <button class="new-entry-btn" onclick="newEntry()">+ New</button>
-          <button class="close-diary-btn" onclick="closeDiary()" title="Close">✕</button>
+          <button class="close-diary-btn" onclick="closeDiary()">✕</button>
         </div>
       </div>
-
-      <!-- entries list view -->
       <div class="diary-entries-list" id="entriesList"></div>
-
-      <!-- write view -->
       <div class="diary-write-area" id="writeArea">
         <div class="write-date-header" id="writeDateHeader"></div>
-        <textarea
-          class="diary-textarea"
-          id="diaryTextarea"
-          placeholder="Aaj kya hua? Yahan likh sakte ho... 🌸&#10;&#10;Koi bhi read nahi kar sakta, sirf tum ho aur tumhari baatein 💕"
-          oninput="updateCharCount()"
-        ></textarea>
+        <textarea class="diary-textarea" id="diaryTextarea"
+          placeholder="Aaj kya hua? Yahan likh sakte ho... 🌸&#10;&#10;Koi bhi read nahi kar sakta 💕"
+          oninput="updateCharCount()"></textarea>
         <div class="write-bottom">
           <div class="char-count" id="charCount">0 words</div>
           <button class="save-btn" onclick="saveEntry()">Save 💾</button>
@@ -603,17 +235,46 @@ body{font-family:'Nunito',sans-serif;overflow:hidden;height:100vh;background:#ff
       </div>
     </div>
   </div>
-
   <div class="diary-bottom-msg" id="diaryMsg">
-    Is diary me na aap apni baatein likh sakte ho 🌸<br>
-    Koi bhi access nahi kar sakta — in fact vignesh bhi and isliye is page pe password bhi laga diya hu 🔒<br>
-    Jab bhi happy ya sad feel karo, aa jaana apni mann ki baatein likh dena and koi bhi nhi padega💕
+    Is diary me na ap apni baatein likh sakte ho 🌸<br>
+    Koi bhi access nahi kar sakta — in fact vignesh bhi and isliye is page pe password bhi laga diya hu and password ko apne pass rakhna 🔒<br>
+    Jab bhi happy ya sad feel karo, aa jaana apni mann ki baatein likh dena and koi bhi nhi padega 💕
   </div>
-
 </div>
 
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+  import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDFxIUuX3MPdorgRN_6Fy2TA1aarQ2Srd4",
+    authDomain: "nandini-diary.firebaseapp.com",
+    databaseURL: "https://nandini-diary-default-rtdb.firebaseio.com",
+    projectId: "nandini-diary",
+    storageBucket: "nandini-diary.firebasestorage.app",
+    messagingSenderId: "313073377284",
+    appId: "1:313073377284:web:d7471b81a2a75924e6d551"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const DIARY_REF = "nandini_diary/entries";
+
+  // expose to global
+  window._fbDb = db;
+  window._fbRef = ref;
+  window._fbSet = set;
+  window._fbGet = get;
+  window._fbChild = child;
+  window._fbDiaryRef = DIARY_REF;
+  window._fbReady = true;
+
+  console.log("Firebase ready ✅");
+</script>
+
 <script>
-// ══ RAIN (s1 + s2 only) ══
+// ══ RAIN ══
 const rainEmojis=['🌸','💕','🌺','💗','🌷','✨','🌼','💖','❤️','💞','🩷'];
 const drops=[];
 for(let i=0;i<32;i++){
@@ -627,47 +288,73 @@ for(let i=0;i<32;i++){
 }
 function setRain(on){ drops.forEach(d=>d.style.display=on?'block':'none'); }
 
-// ══ DIARY DATA — localStorage ══
-const STORAGE_KEY = 'nandini_diary_entries';
+// ══ LOADING ══
+function showLoading(){ document.getElementById('loadingOverlay').classList.add('show'); }
+function hideLoading(){ document.getElementById('loadingOverlay').classList.remove('show'); }
 
-function getEntries(){
-  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-  catch{ return []; }
+// wait for firebase
+function waitFB(cb){
+  if(window._fbReady) cb();
+  else setTimeout(()=>waitFB(cb), 100);
 }
-function saveEntries(entries){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+// ══ FIREBASE HELPERS ══
+function fbSaveEntries(entries){
+  return new Promise((res,rej)=>{
+    waitFB(()=>{
+      const r = window._fbRef(window._fbDb, window._fbDiaryRef);
+      window._fbSet(r, entries).then(res).catch(rej);
+    });
+  });
 }
 
-let currentEntryIndex = -1; // -1 = new entry
+function fbGetEntries(){
+  return new Promise((res,rej)=>{
+    waitFB(()=>{
+      const dbRef = window._fbRef(window._fbDb);
+      window._fbGet(window._fbChild(dbRef, window._fbDiaryRef))
+        .then(snap=>{
+          if(snap.exists()) res(snap.val());
+          else res([]);
+        }).catch(rej);
+    });
+  });
+}
 
-function formatDate(dateStr){
-  const d = new Date(dateStr);
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+// ══ DIARY STATE ══
+let currentEntryIndex = -1;
+let entriesCache = [];
+
+function formatDate(ds){
+  const d=new Date(ds);
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
-
 function getTodayKey(){
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const n=new Date();
+  return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
 }
 
-function openDiary(){
+async function openDiary(){
   document.getElementById('diaryCoverWrap').style.display='none';
   document.getElementById('diaryMsg').style.display='none';
-  const wrap=document.getElementById('diaryOpenWrap');
-  wrap.style.display='flex';
-  wrap.style.animation='diaryOpen .5s ease';
-
-  // load today's entry if exists, else new
-  const entries=getEntries();
-  const todayKey=getTodayKey();
-  const todayIdx=entries.findIndex(e=>e.date===todayKey);
-  if(todayIdx>=0){
-    loadEntry(todayIdx);
-  } else {
-    newEntry();
+  showLoading();
+  try{
+    entriesCache = await fbGetEntries();
+    if(!Array.isArray(entriesCache)) entriesCache=[];
+  } catch(e){
+    entriesCache=[];
+    showToast('Offline mode 🌸');
   }
+  hideLoading();
+  const w=document.getElementById('diaryOpenWrap');
+  w.style.display='flex';
+  w.style.animation='diaryOpen .5s ease';
+  const todayKey=getTodayKey();
+  const todayIdx=entriesCache.findIndex(e=>e.date===todayKey);
+  if(todayIdx>=0) loadEntry(todayIdx);
+  else newEntry();
 }
 
 function closeDiary(){
@@ -679,35 +366,30 @@ function closeDiary(){
 function newEntry(){
   currentEntryIndex=-1;
   const todayKey=getTodayKey();
-  document.getElementById('writeDateHeader').textContent='📅 '+formatDate(todayKey);
-  document.getElementById('topDateLabel').textContent='📅 '+formatDate(todayKey);
-
-  // check if today already has entry
-  const entries=getEntries();
-  const todayIdx=entries.findIndex(e=>e.date===todayKey);
+  const todayIdx=entriesCache.findIndex(e=>e.date===todayKey);
   if(todayIdx>=0){
     currentEntryIndex=todayIdx;
-    document.getElementById('diaryTextarea').value=entries[todayIdx].text;
+    document.getElementById('diaryTextarea').value=entriesCache[todayIdx].text;
   } else {
     document.getElementById('diaryTextarea').value='';
   }
-
+  document.getElementById('writeDateHeader').textContent='📅 '+formatDate(todayKey);
+  document.getElementById('topDateLabel').textContent='📅 '+formatDate(todayKey);
   showWriteArea();
   updateCharCount();
-  setTimeout(()=>document.getElementById('diaryTextarea').focus(),100);
+  setTimeout(()=>document.getElementById('diaryTextarea').focus(),150);
 }
 
 function loadEntry(idx){
-  const entries=getEntries();
-  if(idx<0||idx>=entries.length) return;
+  if(idx<0||idx>=entriesCache.length)return;
   currentEntryIndex=idx;
-  const e=entries[idx];
+  const e=entriesCache[idx];
   document.getElementById('writeDateHeader').textContent='📅 '+formatDate(e.date);
   document.getElementById('topDateLabel').textContent='📅 '+formatDate(e.date);
   document.getElementById('diaryTextarea').value=e.text;
   showWriteArea();
   updateCharCount();
-  setTimeout(()=>document.getElementById('diaryTextarea').focus(),100);
+  setTimeout(()=>document.getElementById('diaryTextarea').focus(),150);
 }
 
 function showWriteArea(){
@@ -716,61 +398,53 @@ function showWriteArea(){
 }
 
 function showEntriesList(){
-  const entries=getEntries();
   const list=document.getElementById('entriesList');
   list.innerHTML='';
-
-  if(entries.length===0){
+  if(entriesCache.length===0){
     list.innerHTML='<div style="text-align:center;padding:30px;font-family:Kalam,cursive;color:#ccc;font-size:16px;">No entries yet 🌸<br>Tap + New to write!</div>';
   } else {
-    // newest first
-    [...entries].reverse().forEach((e,ri)=>{
-      const origIdx=entries.length-1-ri;
+    [...entriesCache].reverse().forEach((e,ri)=>{
+      const origIdx=entriesCache.length-1-ri;
       const div=document.createElement('div');
       div.className='entry-card';
-      const preview=e.text.trim().substring(0,60)+(e.text.length>60?'...':'') || '(empty)';
+      const preview=e.text.trim().substring(0,60)+(e.text.length>60?'...':'')||'(empty)';
       div.innerHTML=`<div class="entry-card-date">📅 ${formatDate(e.date)}</div><div class="entry-card-preview">${preview}</div>`;
       div.onclick=()=>loadEntry(origIdx);
       list.appendChild(div);
     });
   }
-
   document.getElementById('writeArea').style.display='none';
   list.style.display='block';
   document.getElementById('topDateLabel').textContent='📋 All Entries';
 }
 
-function saveEntry(){
+async function saveEntry(){
   const text=document.getElementById('diaryTextarea').value.trim();
   if(!text){ showToast('Write something first! 🌸'); return; }
-
-  const entries=getEntries();
+  showLoading();
   const todayKey=getTodayKey();
-
   if(currentEntryIndex>=0){
-    // update existing
-    entries[currentEntryIndex].text=document.getElementById('diaryTextarea').value;
-    entries[currentEntryIndex].updatedAt=new Date().toISOString();
+    entriesCache[currentEntryIndex].text=document.getElementById('diaryTextarea').value;
+    entriesCache[currentEntryIndex].updatedAt=new Date().toISOString();
   } else {
-    // check if today exists
-    const todayIdx=entries.findIndex(e=>e.date===todayKey);
+    const todayIdx=entriesCache.findIndex(e=>e.date===todayKey);
     if(todayIdx>=0){
-      entries[todayIdx].text=document.getElementById('diaryTextarea').value;
-      entries[todayIdx].updatedAt=new Date().toISOString();
+      entriesCache[todayIdx].text=document.getElementById('diaryTextarea').value;
+      entriesCache[todayIdx].updatedAt=new Date().toISOString();
       currentEntryIndex=todayIdx;
     } else {
-      entries.push({
-        date: todayKey,
-        text: document.getElementById('diaryTextarea').value,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      });
-      currentEntryIndex=entries.length-1;
+      entriesCache.push({date:todayKey,text:document.getElementById('diaryTextarea').value,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});
+      currentEntryIndex=entriesCache.length-1;
     }
   }
-
-  saveEntries(entries);
-  showToast('Saved in your diary 🌸');
+  try{
+    await fbSaveEntries(entriesCache);
+    hideLoading();
+    showToast('Saved in your diary 🌸');
+  } catch(e){
+    hideLoading();
+    showToast('Save failed, try again 😢');
+  }
 }
 
 function updateCharCount(){
@@ -779,11 +453,13 @@ function updateCharCount(){
   document.getElementById('charCount').textContent=words+' word'+(words!==1?'s':'');
 }
 
+let toastTimer=null;
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent='✓ '+msg;
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
 }
 
 // ══ GIFT BOX ══
@@ -808,7 +484,7 @@ function openGift(){
 }
 
 // ══ PIN ══
-const PIN='6263'; let typed='';
+const PIN='1422'; let typed='';
 function pk(k){
   if(k==='*'||k==='#')return;
   if(typed.length>=4)return;
@@ -843,7 +519,6 @@ function go(id){
   setRain(id==='s1'||id==='s2');
 }
 
-// sparkle keyframe
 const spStyle=document.createElement('style');
 spStyle.textContent=`@keyframes sparkleOut{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1.5);opacity:0}}`;
 document.head.appendChild(spStyle);
